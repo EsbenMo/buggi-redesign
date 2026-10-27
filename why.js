@@ -58,11 +58,11 @@ window.WHY = {
     why: "Systemet skal følge brugerens mentale model (H4). Knapper med ord kan læses højt og kræver ikke finmotorik."
   },
   stickycta: {
-    t: "\"Vis 7 bøger\" fastgjort i bunden",
+    t: "Filterpanel og resultater side om side, valgte filtre synlige",
     f: [7], sev: 2, n: "",
     before: "Resultaterne startede under skærmkanten. Børn scroller sjældent uden tydeligt signal.",
-    now: "En fast knap i bunden viser antallet live og fører til resultaterne. Ved 0 bøger står der hvad man kan fjerne.",
-    why: "Systemstatus (H1): barnet ser straks effekten af et valg og har en tydelig næste handling."
+    now: "På PC ligger filtrene i et fast panel til venstre og resultaterne til højre, så man ser effekten af hvert valg uden at scrolle. Over resultaterne vises de valgte filtre som chips, der kan fjernes ét ad gangen. På mobil, hvor der ikke er plads til to kolonner, er der en fast knap i bunden: \"Vis 7 bøger\".",
+    why: "Systemstatus (H1) og genkendelse frem for genkaldelse (H6): man skal ikke huske sine valg, når kun få bøger vises. Fast panel på PC, fast knap på mobil – hver enhed får det mønster, der passer til pladsen."
   },
   book: {
     t: "Egen bogside med lokkende tekst og forslag til næste bog",

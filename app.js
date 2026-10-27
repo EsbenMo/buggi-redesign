@@ -182,30 +182,57 @@
   }
 
   function viewDiscover() {
-    const results = filteredDiscover();
-    const moodBtn = (t, set) => `<button type="button" class="chip big" aria-pressed="${set.has(t.id)}" data-tog="${t.id}" data-set="${set === disc.moods ? "moods" : "themes"}"><span class="ce" aria-hidden="true">${t.e}</span><span class="cl">${t.label}</span></button>`;
+    const moodBtn = (t, key) => `<button type="button" class="chip big" aria-pressed="${disc[key].has(t.id)}" data-tog="${t.id}" data-set="${key}"><span class="ce" aria-hidden="true">${t.e}</span><span class="cl">${t.label}</span></button>`;
     const seg = (k, label, opts) => `<fieldset class="seg"><legend>${label}</legend>${opts.map(([v, t]) => `<label><input type="radio" name="${k}" value="${v}" ${disc[k] === v ? "checked" : ""}><span>${t}</span></label>`).join("")}</fieldset>`;
-    const hints = [...disc.moods, ...disc.themes].map(id => `${TAGS[id].label}: ${TAGS[id].hint}`);
     app.innerHTML = `<div class="page-h"><h1>Opdag bøger</h1><p>Vælg hvordan bogen skal føles og hvad den skal handle om.</p></div>
-      <div class="filters">${pin("moods")}
-        <section aria-labelledby="g1"><h2 id="g1">Hvordan skal bogen føles?</h2><div class="grid">${MOODS.map(t => moodBtn(t, disc.moods)).join("")}</div></section>
-        <section aria-labelledby="g2"><h2 id="g2">Hvad skal den handle om?</h2><div class="grid">${THEMES.map(t => moodBtn(t, disc.themes)).join("")}</div></section>
-        <p class="rule" role="status">${pin("filterrule")}<b>Jo flere du vælger, jo færre bøger.</b> Vi viser kun bøger, der passer til alt, du har valgt.${hints.length ? `<br><span class="small">${esc(hints.join(" · "))}</span>` : ""}</p>
-        <div class="segs">
-          ${seg("len", "Hvor lang?", [["alle", "Alle"], ["Kort", "Kort"], ["Mellem", "Mellem"], ["Lang", "Lang"]])}
-          ${seg("lvl", "Hvor svær?", [["alle", "Alle"], ["Let at læse", "Let"], ["Middel", "Middel"], ["Svær", "Svær"]])}
-          ${seg("cat", "Hvilken slags?", [["alle", "Begge"], ["Fiktion", "Fortælling"], ["Fakta", "Fakta"]])}
-        </div>
+      <div class="disc-layout">
+        <aside class="filters" aria-label="Filtre">${pin("moods")}
+          <section aria-labelledby="g1"><h2 id="g1">Hvordan skal bogen føles?</h2><div class="grid">${MOODS.map(t => moodBtn(t, "moods")).join("")}</div></section>
+          <section aria-labelledby="g2"><h2 id="g2">Hvad skal den handle om?</h2><div class="grid">${THEMES.map(t => moodBtn(t, "themes")).join("")}</div></section>
+          <p class="rule">${pin("filterrule")}<b>Jo flere du vælger, jo færre bøger.</b> Vi viser kun bøger, der passer til alt, du har valgt.<span class="small hints" id="hints"></span></p>
+          <div class="segs">
+            ${seg("len", "Hvor lang?", [["alle", "Alle"], ["Kort", "Kort"], ["Mellem", "Mellem"], ["Lang", "Lang"]])}
+            ${seg("lvl", "Hvor svær?", [["alle", "Alle"], ["Let at læse", "Let"], ["Middel", "Middel"], ["Svær", "Svær"]])}
+            ${seg("cat", "Hvilken slags?", [["alle", "Begge"], ["Fiktion", "Fortælling"], ["Fakta", "Fakta"]])}
+          </div>
+        </aside>
+        <section class="results" id="results" aria-labelledby="res-h" tabindex="-1">${pin("stickycta")}
+          <div class="active" id="active"></div>
+          <h2 id="res-h" role="status"></h2>
+          <div id="res-body"></div>
+        </section>
       </div>
-      <section class="results" id="results" aria-labelledby="res-h" tabindex="-1"><h2 id="res-h">${results.length} ${results.length === 1 ? "bog" : "bøger"} passer til dig</h2>
-        ${results.length ? `<div class="list">${results.map(b => bookCard(b)).join("")}</div>` : `<p class="empty">Ingen bøger passer til alle dine valg. Prøv at fjerne ét af dem – fx <button class="link" type="button" data-clear>nulstil alt</button>.</p>`}
-      </section>
-      <div class="sticky-cta">${pin("stickycta")}<a class="cta" href="#results" data-jump>Vis ${results.length} ${results.length === 1 ? "bog" : "bøger"}</a>${(disc.moods.size + disc.themes.size) ? `<button type="button" class="ghost" data-clear>Nulstil</button>` : ""}</div>`;
-    app.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { const set = disc[c.dataset.set]; set.has(c.dataset.tog) ? set.delete(c.dataset.tog) : set.add(c.dataset.tog); viewDiscover(); const f = app.querySelector(`[data-tog="${c.dataset.tog}"]`); if (f) f.focus(); }));
-    app.querySelectorAll('.seg input').forEach(i => i.addEventListener("change", () => { disc[i.name] = i.value; viewDiscover(); app.querySelector(`input[name="${i.name}"]:checked`)?.focus(); }));
-    app.querySelectorAll("[data-clear]").forEach(b => b.addEventListener("click", () => { disc.moods.clear(); disc.themes.clear(); disc.len = disc.lvl = disc.cat = "alle"; viewDiscover(); }));
+      <div class="sticky-cta"><a class="cta" href="#results" data-jump></a></div>`;
+    app.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => { const set = disc[c.dataset.set]; set.has(c.dataset.tog) ? set.delete(c.dataset.tog) : set.add(c.dataset.tog); updateDiscover(); }));
+    app.querySelectorAll(".seg input").forEach(i => i.addEventListener("change", () => { disc[i.name] = i.value; updateDiscover(); }));
     app.querySelector("[data-jump]").addEventListener("click", e => { e.preventDefault(); const r = $("#results"); r.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); r.focus({ preventScroll: true }); });
+    app.addEventListener("click", discoverClicks);
+    updateDiscover();
     wirePickers(app);
+  }
+  function discoverClicks(e) {
+    if (!$("#active")) return app.removeEventListener("click", discoverClicks);
+    const rm = e.target.closest("[data-rm]");
+    if (rm) { const [k, v] = rm.dataset.rm.split(":"); if (k === "moods" || k === "themes") disc[k].delete(v); else disc[k] = "alle"; updateDiscover(); }
+    if (e.target.closest("[data-clear]")) { disc.moods.clear(); disc.themes.clear(); disc.len = disc.lvl = disc.cat = "alle"; updateDiscover(); }
+  }
+  // Opdaterer kun det, der ændrer sig, så filterpanelets scrollposition og fokus bevares
+  function updateDiscover() {
+    const results = filteredDiscover();
+    app.querySelectorAll(".chip[data-tog]").forEach(c => c.setAttribute("aria-pressed", disc[c.dataset.set].has(c.dataset.tog)));
+    app.querySelectorAll(".seg input").forEach(i => { i.checked = disc[i.name] === i.value; });
+    const labels = { len: { Kort: "Kort", Mellem: "Mellem", Lang: "Lang" }, lvl: { "Let at læse": "Let", Middel: "Middel", Svær: "Svær" }, cat: { Fiktion: "Fortælling", Fakta: "Fakta" } };
+    const act = [
+      ...[...disc.moods].map(id => ["moods:" + id, TAGS[id].e + " " + TAGS[id].label]),
+      ...[...disc.themes].map(id => ["themes:" + id, TAGS[id].e + " " + TAGS[id].label]),
+      ...["len", "lvl", "cat"].filter(k => disc[k] !== "alle").map(k => [k + ":x", { len: "Længde: ", lvl: "Sværhed: ", cat: "Slags: " }[k] + labels[k][disc[k]]])
+    ];
+    $("#active").innerHTML = act.length ? `<span class="act-l">Du har valgt:</span>${act.map(([k, t]) => `<button type="button" class="act" data-rm="${k}" aria-label="Fjern ${esc(t)}">${esc(t)} <span aria-hidden="true">✕</span></button>`).join("")}<button type="button" class="link" data-clear>Nulstil alt</button>` : `<span class="act-l small">Du har ikke valgt noget endnu. Vi viser alle bøger til 8–12 år.</span>`;
+    const sel = [...disc.moods, ...disc.themes];
+    $("#hints").innerHTML = sel.length ? "<br>" + esc(sel.map(id => TAGS[id].label + ": " + TAGS[id].hint).join(" · ")) : "";
+    $("#res-h").textContent = `${results.length} ${results.length === 1 ? "bog" : "bøger"} passer til dig`;
+    $("#res-body").innerHTML = results.length ? `<div class="list">${results.map(b => bookCard(b)).join("")}</div>` : `<p class="empty">Ingen bøger passer til alle dine valg. Fjern et af dem ovenfor, eller <button class="link" type="button" data-clear>nulstil alt</button>.</p>`;
+    app.querySelector("[data-jump]").textContent = `Vis ${results.length} ${results.length === 1 ? "bog" : "bøger"}`;
   }
   function filteredDiscover() {
     return BOOKS.filter(b => inTarget(b)).filter(b => [...disc.moods, ...disc.themes].every(t => b.tags.includes(t))

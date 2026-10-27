@@ -209,3 +209,22 @@ body.why-on .why-pin{display:block;animation:none}
 .ck-btns button{min-height:var(--tap);border-radius:12px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-weight:700;padding:4px 8px}
 .cookies .why-pin{top:-12px;right:-8px}
 @media (max-width:760px){.cookies{left:10px;right:10px;max-width:none;bottom:70px}.ftr{padding-bottom:170px}}
+
+/* Opdag: filterpanel til venstre, resultater til højre på PC */
+.active{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.act-l{font-weight:700;margin-right:4px}
+.act{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);background:var(--yellow);color:var(--ink);border:0;border-radius:999px;padding:0 16px;font-weight:700}
+.act:hover{background:#ffe27a}
+.active .link,.empty .link{background:none;border:0;color:var(--yellow);text-decoration:underline;font:inherit;min-height:var(--tap);padding:0 8px;cursor:pointer}
+.results{position:relative}
+.results .why-pin{top:-6px}
+@media (min-width:900px){
+  .disc-layout{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:32px;align-items:start}
+  .disc-layout .filters{position:sticky;top:96px;max-height:calc(100vh - 112px);overflow:auto;padding:0 12px 20px 0}
+  .disc-layout .grid{grid-template-columns:repeat(3,1fr)}
+  .disc-layout .results{margin-top:0}
+  .disc-layout .list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .sticky-cta{display:none}
+  main{padding-bottom:60px}
+}
+@media (max-width:899px){ .results .active{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0} }
