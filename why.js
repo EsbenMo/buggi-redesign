@@ -33,8 +33,8 @@ window.WHY = {
     t: "Sæsontema bevaret, men dæmpet",
     f: [20], sev: 1, n: "Noter: Halloween virker opdateret, ikke støvet",
     before: "Travl Halloween-baggrund og animationer konkurrerede med bogcovers. Et spøgelse viste og skjulte en scrollbar.",
-    now: "Halloween-farver, ikoner og tekst bevares. Baggrunden er rolig, og der er ingen animation, der ændrer layoutet. Animation respekterer \"reducér bevægelse\".",
-    why: "Sæsonen gør siden levende (din note). Dekoration må ikke konkurrere med indholdet eller flytte siden."
+    now: "Halloween bevares som en levende, men stille baggrund: en gammel kirkegård med måne, flagermus og spindelvæv, spøgelser der drikker varm kakao og en zombie foran tv'et. Den ligger bag indholdet, er dæmpet og ændrer aldrig layoutet. Den kan sættes på pause med en knap øverst, og \"reducér bevægelse\" slukker den automatisk.",
+    why: "Sæsonen gør siden levende (din note), og humoren passer til 8–12-årige. Bevægelse skal samtidig kunne stoppes (WCAG 2.2.2), og den må ikke konkurrere med bogcovers eller flytte siden."
   },
   nav: {
     t: "Tekst og ikon i menuen på både PC og mobil",

@@ -23,7 +23,7 @@
   const lenLabel = p => p < 110 ? "Kort" : p < 160 ? "Mellem" : "Lang";
   const inTarget = b => b.age[0] <= 12 && b.age[1] >= 8 && b.age[0] <= 11; // 8–12 år er målgruppen
   const pin = id => `<button class="why-pin" data-why="${id}" aria-label="Hvorfor ser det sådan ud? ${esc(WHY[id].t)}">?</button>`;
-  const cover = (b, big) => `<span class="cover${big ? " big" : ""}" style="--c1:${b.c[0]};--c2:${b.c[1]}" aria-hidden="true"><span class="cover-t">${esc(b.title)}</span><span class="cover-e">${b.tags.slice(0, 2).map(t => TAGS[t].e).join("")}</span></span>`;
+  const cover = (b, big) => `<span class="cover${big ? " big" : ""}" style="--c1:${b.c[0]};--c2:${b.c[1]}" aria-hidden="true"><span class="cover-t">${esc(b.title)}</span>${window.bookArt ? window.bookArt(b.id) : ""}</span>`;
   const dot = b => lib() ? `<span class="avail ${b.av ? "yes" : "no"}">${b.av ? "På hylden" : "Udlånt"}</span>` : "";
   const bookCard = (b, extra = "") => `<a class="card" href="#/book/${b.id}">${cover(b)}<span class="card-title">${esc(b.title)}</span><span class="card-meta">${esc(b.author)} · ${b.age[0]}–${b.age[1]} år</span>${dot(b)}${extra}</a>`;
   const tagChip = id => `<span class="tag"><span aria-hidden="true">${TAGS[id].e}</span> ${TAGS[id].label}</span>`;
@@ -410,6 +410,11 @@
       <a class="rep" href="report.html#fund">Se hele reviewet og alle 21 fund →</a>`;
     d.hidden = false; $(".close", d).focus(); $(".close", d).onclick = () => { d.hidden = true; };
   }
+  // Pauseknap til den animerede baggrund (huskes pr. enhed)
+  const bgBtn = $("#bg-toggle");
+  const setBg = off => { document.body.classList.toggle("bg-off", off); bgBtn.setAttribute("aria-pressed", off); bgBtn.textContent = off ? "▶ Start baggrund" : "⏸ Sæt baggrund på pause"; };
+  setBg(store.get("buggi-bg") === "off");
+  bgBtn.addEventListener("click", () => { const off = !document.body.classList.contains("bg-off"); store.set("buggi-bg", off ? "off" : "on"); setBg(off); });
   $("#why-toggle").addEventListener("click", () => { whyOn = !whyOn; store.set("buggi-why", whyOn ? "1" : "0"); document.body.classList.toggle("why-on", whyOn); $("#why-toggle").setAttribute("aria-pressed", whyOn); if (!whyOn) $("#why-drawer").hidden = true; });
   document.addEventListener("keydown", e => { if (e.key === "Escape") $("#why-drawer").hidden = true; });
 
