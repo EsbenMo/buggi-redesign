@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find din næste bog – Buggi (redesign-prototype)</title>
+<meta name="description" content="Redesign-prototype af buggi.dk, lavet som UX-case til DBC digital. Ikke en officiel DBC-tjeneste.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff7a5c'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23101a35' font-family='sans-serif' font-weight='700'%3Eb%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#app">Gå til indholdet</a>
+<div class="proto-banner" role="note">
+  <span>Redesign-prototype med eksempeldata – ikke en officiel DBC-tjeneste.</span>
+  <button id="why-toggle" type="button" aria-pressed="false">💡 Vis begrundelser</button>
+  <a href="report.html">Læs rapporten</a>
+</div>
+<header id="hdr" class="hdr"></header>
+<main id="app" tabindex="-1"></main>
+<div id="toast" class="toast" role="status" hidden></div>
+<aside id="why-drawer" class="drawer" role="dialog" aria-labelledby="why-t" hidden></aside>
+<script src="data.js"></script>
+<script src="why.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

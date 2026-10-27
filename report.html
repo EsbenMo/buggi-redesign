@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redesign af Buggi: rapport og begrundelser</title>
+<meta name="description" content="UX-review og begrundelser bag redesign-prototypen af buggi.dk. Lavet som case til DBC digital.">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--f-head:"Baloo 2","Atkinson Hyperlegible",system-ui,sans-serif}
+  *{box-sizing:border-box}
+  h1,h2,h3{font-family:var(--f-head);line-height:1.15;margin:0}
+  h2{font-size:1.5rem;font-weight:800}
+  body{margin:0;background:#fff;color:#101a35;font:400 18px/1.5 "Atkinson Hyperlegible",system-ui,sans-serif}
+  .small{font-size:.9rem}
+  main{max-width:860px;padding:24px 20px 80px}
+  a{color:#0b3d91}
+  h1{font-size:clamp(2rem,5vw,3rem)} h2{margin:44px 0 10px;border-top:4px solid #101a35;padding-top:14px} h3{margin:24px 0 6px;font-size:1.25rem}
+  .top{background:#101a35;color:#fff;padding:10px 20px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+  .top a{color:#ffd23f;font-weight:700}
+  .lead{font-size:1.25rem;max-width:60ch}
+  .box{background:#fff4e0;border-left:6px solid #ff7a5c;padding:12px 16px;border-radius:8px;margin:16px 0}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;margin:12px 0}
+  th,td{border-bottom:1px solid #ccd;padding:8px 8px;text-align:left;vertical-align:top}
+  th{background:#eef0fa;position:sticky;top:0}
+  .tbl{overflow-x:auto}
+  .sev{display:inline-block;min-width:26px;text-align:center;border-radius:6px;font-weight:700;padding:0 6px}
+  .s3{background:#ffb4a6}.s2{background:#ffe08a}.s1{background:#d6f5df}
+  ol.t li,ul li{margin:6px 0}
+  .tr{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .tr>div{border:2px solid #101a35;border-radius:12px;padding:12px 14px}
+  .tr h4{margin:0 0 4px;font-family:var(--f-head)}
+  @media (max-width:640px){.tr{grid-template-columns:1fr}}
+  .toc a{display:inline-block;margin:2px 10px 2px 0}
+  .small{color:#3a4466}
+  h4{color:#101a35}
+  :focus-visible{outline:3px solid #0b3d91}
+</style>
+</head>
+<body>
+<div class="top"><strong>Buggi-redesign</strong><a href="index.html">Åbn prototypen →</a><a href="#fund">Alle 21 fund</a></div>
+<main>
+<h1>Redesign af buggi.dk</h1>
+<p class="lead">Rapport bag prototypen: hvad reviewet fandt, hvad jeg ændrede, og hvorfor. Lavet af Esben Mortensen som case til DBC digital.</p>
+<p class="small toc"><a href="#resume">Resumé</a><a href="#valg">Tre udfordringer og løsninger</a><a href="#noter">Mine egne noter</a><a href="#behold">Det jeg beholdt</a><a href="#fund">Alle fund</a><a href="#test">Sådan testes det</a><a href="#forbehold">Forbehold</a><a href="#kilder">Kilder</a></p>
+<div class="box"><b>Vigtigt:</b> Prototypen er en opfattelse af, hvordan Buggi kunne fungere, med eksempeldata og opfundne bogbeskrivelser (undtagen to kendte serier fra reviewet). Den er ikke en officiel DBC-tjeneste, og tallene i reviewet er fra én evaluators gennemgang den 26. oktober 2026.</div>
+
+<h2 id="resume">Resumé</h2>
+<p>Casen beder om et hurtigt review på højst to timer uden research. Ifølge casen er Buggi primært designet til at hjælpe børn i 3.–5. klasse, mens de står på biblioteket og skal finde en bog at låne. Det er den præmis, jeg har vægtet højest: vejen fra inspiration til bog i hånden.</p>
+<p>Reviewet fandt 21 problemer, hvoraf 6 er alvorlige (severity 3 af 4). De samler sig i tre udfordringer, som prototypen løser i denne rækkefølge:</p>
+<ol class="t">
+  <li><b>Valg af bibliotek bryder forbindelsen til hylden.</b> Uden valgt sted forsvinder hyldeplacering og udlånsstatus – og første skærm gør det let at springe valget over.</li>
+  <li><b>Opdag-filteret er svært at forstå og ramme.</b> Emojis uden navne, overlap på mobil og et filter, der giver flere bøger, når man vælger mere.</li>
+  <li><b>Søgningen tilgiver ikke stavefejl.</b> “hary poter” giver “Øv bøv”, selv om målgruppen omfatter ordblinde børn.</li>
+</ol>
+
+<h2 id="valg">Tre udfordringer og hvad jeg ændrede</h2>
+<h3>1. Bibliotekvalg (prioritet 1)</h3>
+<div class="tr">
+  <div><h4>I dag</h4><ul><li>Fuldskærmsdialog med fokus på “Fortsæt uden at vælge” (fund 1)</li><li>Gemt valg overtrumfer adressen, så delte links viser forkert beholdning (fund 2)</li><li>234 poster, testposter og “Københavns Hovedbibliotek” som eneste København (fund 9, 14)</li><li>Infoboksen dækker indhold på mobil, og et tryk valgte “Arden Skole” uden bekræftelse (fund 6, 12)</li></ul></div>
+  <div><h4>Prototypen</h4><ul><li>Vælger i hovedmenuen til venstre, med label “Vælg skole eller bibliotek” (mine noter)</li><li>“Hvor er du?”-kort på forsiden i stedet for en dialog, med løftet “så viser vi kun bøger, der står på hylden”</li><li>Nærmeste sted øverst via “Brug min placering”; grupperet efter kommune og skole; ingen testposter; ingen separat skolevælger-side</li><li>Smal statuslinje i stedet for boks; valget kan fortrydes</li><li>Adressen vinder: <code>?lib=kbh-nord</code> kan bruges i QR-koder på reolerne</li></ul></div>
+</div>
+<p class="small">Prøv: <a href="index.html?lib=kbh-nord">index.html?lib=kbh-nord</a> åbner direkte på Nørrebro Bibliotek.</p>
+<h3>2. Opdag-filteret (prioritet 2)</h3>
+<div class="tr">
+  <div><h4>I dag</h4><ul><li>Sky af overlappende emojis, der omarrangeres efter første klik (fund 4)</li><li>Navn kun ved hover, som ikke findes på touch (fund 15)</li><li>Flere valg giver flere bøger (fund 3)</li><li>Skydere uden værdi; lagkagediagram; resultater under skærmkanten (fund 7, 17)</li></ul></div>
+  <div><h4>Prototypen</h4><ul><li>Fast gitter, knapper på mindst 56 px med navn under hver emoji</li><li>To grupper med overskrift: “Hvordan skal bogen føles?” og “Hvad skal den handle om?”</li><li>Regel i klartekst: “Jo flere du vælger, jo færre bøger”</li><li>Knapper med ord for længde, sværhed og Fakta/Fortælling</li><li>Fast knap i bunden: “Vis 7 bøger”</li></ul></div>
+</div>
+<h3>3. Søgning (prioritet 3)</h3>
+<div class="tr">
+  <div><h4>I dag</h4><ul><li>Ingen stavetolerance (fund 5)</li><li>Kun titel og forfatter, ikke emne (fund 18)</li><li>Feltet har ingen tydelig label</li></ul></div>
+  <div><h4>Prototypen</h4><ul><li>Label “Søg efter bøger” (mine noter)</li><li>Fejltolerant: “hary poter” viser Harry Potter med besked om rettelsen</li><li>Emner virker: “heste”, “fodbold”</li><li>Ved ingen resultater foreslås emner</li></ul></div>
+</div>
+<p>Prøv selv: <a href="index.html#/search?q=hary%20poter">søg “hary poter”</a> og <a href="index.html#/search?q=heste">søg “heste”</a>.</p>
+
+<h2 id="noter">Mine egne noter fra gennemgangen</h2>
+<p>Noterne fra mobiltesten er arbejdet ind som disse beslutninger:</p>
+<div class="tbl"><table>
+<tr><th>Min note</th><th>Hvad prototypen gør</th></tr>
+<tr><td>“Fortsæt uden at vælge – vælge hvad?” Et kryds til at fortsætte, men hvad hvis jeg vil tilbage?</td><td>Teksten er erstattet af en tydelig vælger, der altid er i menuen. Intet kryds. Forældre og lærere, der hjælper barnet, kan skifte sted når som helst.</td></tr>
+<tr><td>Emojis som filter har ingen overskrifter eller labels; de ser forskellige ud på Android og iOS.</td><td>Navn under hver emoji og to overskrifter. Forskellen på “Magi” og “Fabeldyr” (troldmanden og enhjørningen) er forklaret i en hjælpetekst, der vises ved valg.</td></tr>
+<tr><td>Hvorfor får jeg vist karrusellerne? Sæson, alder eller hvad?</td><td>Hver række har en h2 og en undertekst, fx “Uhyggelige bøger til Halloween – Til dig, der tør”.</td></tr>
+<tr><td>Siden mangler en h1. Hver kategori skal have sin egen overskrift.</td><td>H1 “Find din næste bog” og h2 pr. række.</td></tr>
+<tr><td>Scrollbar introduceres, når man skyder et spøgelse afsted – forvirrer.</td><td>Ingen animation ændrer layoutet. Animation respekterer “reducér bevægelse”.</td></tr>
+<tr><td>Skoleikonet viser tooltip, så en side, hvor man igen skal vælge skole. Slet siden; vis skoler på forsiden; forudvælg nærmeste.</td><td>Ingen separat side. Listen er på forsiden og i menuen med nærmeste øverst og “Brug min placering”. (Kræver i produktion samtykke til lokation.)</td></tr>
+<tr><td>Søgefeltet: label “Søg efter bøger”, så man ikke tror, det er skoler.</td><td>Præcis den label.</td></tr>
+<tr><td>Halloween-tema er rigtig fedt, siden virker opdateret.</td><td>Sæsonfarver og ikoner bevaret, men dæmpet så de ikke konkurrerer med bogcovers.</td></tr>
+<tr><td>En bog under “Har du læst” sender mig bare ned på listen. Jeg forventede en side med beskrivelse og relaterede bøger (emneord, kategori, lix, alder).</td><td>Egen bogside med resumé og “Lyst til noget lignende?”: forslag med årsag og valg “Lidt lettere / Samme niveau / Lidt sværere”.</td></tr>
+</table></div>
+
+<h2 id="behold">Det jeg bevarede</h2>
+<ul>
+  <li><b>“Find på hylden”</b>: reviewets stærkeste element. Jeg har forklaret den grønne prik og gjort handlingen til bogsidens primære knap.</li>
+  <li><b>Emojis som sprog for humør og tema</b>: idéen er god for børn. Jeg har tilføjet ord, ikke fjernet dem.</li>
+  <li><b>Sæsontemaet</b> og Buggis farver.</li>
+  <li>Opdag, Søg og forsiden som tre klare hovedområder.</li>
+</ul>
+<p>Mobilen er i reviewet vurderet som pænt tilpasset. Jeg har derfor kun ændret det, der var værre end på PC: menuen mister sine tekster, og infoboksen dækker indhold. Tabbaren i bunden har nu ikon og tekst.</p>
+
+<h2 id="fund">Alle 21 fund fra reviewet</h2>
+<p>Severity følger NN/g: 1 kosmetisk, 2 mindre, 3 alvorligt, 4 katastrofe. “Løst i prototypen” viser, hvor i prototypen man kan se løsningen (slå “Vis begrundelser” til for de gule ?-knapper).</p>
+<div class="tbl"><table id="ftab"><thead><tr><th>#</th><th>Heuristik</th><th>Fund</th><th>Sev.</th><th>Løst i prototypen</th></tr></thead><tbody></tbody></table></div>
+
+<h2 id="test">Sådan testes det</h2>
+<ul>
+  <li><b>5–6 børn på et bibliotek</b> med opgaven “Find en bog, du har lyst til, og gå hen og tag den”. Mål succes og tid til bog i hånden, nu og med ny version.</li>
+  <li><b>Analytics før og efter</b>: andel sessioner med valgt bibliotek og andel bogvisninger, der fører til “Find på hylden”. Baseline kan måles i dag.</li>
+  <li><b>Bibliotekarerne</b>: færre børn, der spørger om hjælp til at finde en bog, Buggi har vist dem.</li>
+  <li>Test med ordblinde børn og børn med dansk som andetsprog. Det er netop dem, stavetolerance og labels er til for.</li>
+</ul>
+
+<h2 id="forbehold">Forbehold</h2>
+<ul>
+  <li>Reviewet er lavet af én evaluator. NN/g anbefaler 3–5; nogle problemer er sandsynligvis overset.</li>
+  <li>Mobil er emuleret, ikke testet på en fysisk telefon.</li>
+  <li>Fundene er hypoteser, ikke bevis. En heuristisk evaluering kan ikke erstatte test med børn.</li>
+  <li>To antagelser bør tjekkes i DBC’s data, før noget bygges: at mange sessioner i dag sker uden valgt bibliotek, og at mange børn bruger en filial frem for hovedbiblioteket.</li>
+  <li>Prototypen simulerer placering, udlånsstatus og bogdata. Cookie-vinduet er ikke med: i produktionen bør samtykke have ligeværdige valg og børnevenligt sprog (fund 11).</li>
+  <li>Jeg har ikke undersøgt teknik, beholdningsdata eller DBC’s øvrige begrænsninger. Der kan være gode grunde til nuværende valg, jeg ikke kender.</li>
+</ul>
+
+<h2 id="kilder">Kilder</h2>
+<ul>
+  <li><a href="https://buggi.dk">buggi.dk</a> og <a href="https://buggi.dk/about">Om Buggi</a>, testet 26. oktober 2026</li>
+  <li><a href="https://pro.dbcdigital.dk/dokumentation/buggi/saadan-bruges-buggi/">DBC DIGITAL Pro: Sådan bruger du Buggi</a></li>
+  <li><a href="https://pro.dbcdigital.dk/dokumentation/buggi/buggi-i-kiosktilstand/">DBC DIGITAL Pro: Buggi i kiosktilstand</a></li>
+  <li>Nielsen Norman Group: How to conduct a heuristic evaluation; 10 usability heuristics; Severity ratings; Children’s websites</li>
+  <li>Smashing Magazine: A guide to heuristic website reviews</li>
+  <li>Konkurrenter: Bibblix, Whichbook, The StoryGraph, Toppsta</li>
+  <li>Præmissen om, at barnet står på biblioteket, kommer fra casen fra DBC digital, ikke fra offentlige kilder</li>
+</ul>
+</main>
+<script>
+const F=[
+[1,"H3 Brugerkontrol","Fokus starter på “Fortsæt uden at vælge”, så Enter springer bibliotekvalget over",3,"Vælger i menuen + “Hvor er du?”-kort"],
+[2,"H4 Konsistens","Gemt bibliotek overtrumfer biblioteket i URL’en",3,"Adressen vinder (?lib=…)"],
+[3,"H4 Konsistens","Flere valgte emojis giver flere bøger (1.255 → 1.332)",3,"Opdag: OG-logik + regel i klartekst"],
+[4,"H5 Fejlforebyggelse","Emoji-skyen overlapper og omarrangeres efter første klik",3,"Opdag: fast gitter"],
+[5,"H9 Fejlhåndtering","“hary poter” giver “Øv bøv”, uden “Mente du …?”",3,"Søg: fejltolerant + besked"],
+[6,"H3 Brugerkontrol","Infoboksen bliver stående og dækker indhold på mobil",3,"Smal statuslinje i flowet"],
+[7,"H1 Systemstatus","Opdag-resultater starter under skærmkanten",2,"Fast “Vis N bøger”-knap"],
+[8,"H1 Systemstatus","Den grønne prik på “Find på hylden” forklares ikke",2,"Forklaring på bogside og hylde-side"],
+[9,"H2 Virkelighed","Bibliotekslisten matcher ikke barnets virkelighed",2,"Grupperet efter kommune/skole, nærmeste øverst"],
+[10,"H2 Virkelighed","Forsiden fremhæver bøger for 11–16 år til 8–12-årige",2,"Standard: 8–12 år"],
+[11,"H2 Virkelighed","Første skærm er et cookievindue i voksensprog",2,"Ikke med i prototypen (anbefaling i forbehold)"],
+[12,"H3 Brugerkontrol","Valg af bibliotek bekræftes ikke",2,"Bekræftelse med “Fortryd”"],
+[13,"H4 Konsistens","Menuen har tekst på PC, kun ikoner på mobil",2,"Tabbar med ikon + tekst"],
+[14,"H5 Fejlforebyggelse","Testposter kan vælges i produktion",2,"Fjernet fra listen"],
+[15,"H6 Genkendelse","Emojiernes navne vises kun ved hover",2,"Navn under hver emoji"],
+[16,"H6 Genkendelse","Forsidens rækker har kun emojis som overskrift",2,"H2 + undertekst pr. række, h1 på siden"],
+[17,"H6 Genkendelse","Skyderne viser ikke valgt værdi",2,"Knapper med ord"],
+[18,"H7 Fleksibilitet","Søgning kun på titel og forfatter, ikke emne",2,"Emnesøgning"],
+[19,"H10 Hjælp","Dialogen forklarer ikke, hvad barnet får ud af at vælge bibliotek",2,"Løfte i barnets sprog"],
+[20,"H8 Minimalisme","Travl Halloween-baggrund og animationer",1,"Dæmpet sæsontema"],
+[21,"H10 Hjælp","Ingen synlig feedbackkanal",1,"Ikke løst – bør tilføjes i produktionen"]];
+document.querySelector("#ftab tbody").innerHTML=F.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="sev s${r[3]}">${r[3]}</span></td><td>${r[4]}</td></tr>`).join("");
+</script>
+</body>
+</html>
