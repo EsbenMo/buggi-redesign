@@ -189,9 +189,36 @@
     wirePickers(app);
   }
 
+  // Små børneanimationer under hvert filter. Trinnet (0-3) sættes som data-step og styres af CSS.
+  const SEG_STEPS = { len: { alle: 0, Kort: 1, Mellem: 2, Lang: 3 }, lvl: { alle: 0, "Let at læse": 1, Middel: 2, "Svær": 3 }, cat: { alle: 0, Fiktion: 1, Fakta: 2 } };
+  const segStep = k => SEG_STEPS[k][disc[k]] || 0;
+  const SEG_ART = {
+    len: `<svg class="seg-art art-book" viewBox="0 0 160 100" aria-hidden="true" focusable="false">
+      <rect class="bk-bottom" x="18" y="82" width="124" height="8" rx="3"/>
+      <g class="bk-pages"><rect x="24" y="22" width="112" height="60" fill="#f6f0df"/><path d="M24 34H136M24 46H136M24 58H136M24 70H136" stroke="#d9cfb2" stroke-width="2"/></g>
+      <g class="bk-top"><rect x="18" y="12" width="124" height="10" rx="3"/><path d="M104 22v14l6-4 6 4V22z" fill="#ffd23f"/></g>
+    </svg>`,
+    lvl: `<svg class="seg-art art-face" viewBox="0 0 120 110" aria-hidden="true" focusable="false">
+      <circle class="fc-head" cx="60" cy="64" r="34"/>
+      <g class="fc-brows"><path d="M38 44q9-6 18 0M64 44q9-6 18 0"/></g>
+      <g class="fc-eyes"><circle class="fc-eye" cx="47" cy="58" r="8"/><circle class="fc-eye" cx="73" cy="58" r="8"/><circle class="fc-pupil" cx="47" cy="58" r="3.5"/><circle class="fc-pupil" cx="73" cy="58" r="3.5"/></g>
+      <ellipse class="fc-mouth" cx="60" cy="84" rx="9" ry="3"/>
+      <g class="fc-helm"><path d="M24 62C22 30 40 14 60 14s38 16 36 48z"/><path d="M24 62h72v8H24z"/><path class="fc-visor" d="M30 50h60v7H30z"/><path d="M60 14v-8" stroke-width="5"/><circle cx="60" cy="6" r="5" class="fc-knob"/></g>
+    </svg>`,
+    cat: `<svg class="seg-art art-apple" viewBox="0 0 120 110" aria-hidden="true" focusable="false">
+      <defs><clipPath id="apple-clip"><path id="apple-shape" d="M60 34C46 24 22 30 20 58c-2 30 20 50 34 48 4-.5 5-3 6-3s2 2.5 6 3c14 2 36-18 34-48-2-28-26-34-40-24z"/></clipPath></defs>
+      <path class="ap-body" d="M60 34C46 24 22 30 20 58c-2 30 20 50 34 48 4-.5 5-3 6-3s2 2.5 6 3c14 2 36-18 34-48-2-28-26-34-40-24z"/>
+      <path class="ap-stem" d="M60 36c0-10 2-16 8-22"/>
+      <path class="ap-leaf" d="M64 24c6-10 18-10 24-6-4 10-16 12-24 6z"/>
+      <g clip-path="url(#apple-clip)" class="ap-text">
+        <g class="t1"><text x="26" y="52">Der var engang en</text><text x="26" y="70">dreng, som fandt</text><text x="26" y="88">et æble i skoven</text></g>
+        <g class="t2"><text x="14" y="42">Æbler vokser på træer.</text><text x="14" y="60">Et træ kan blive 100 år.</text><text x="14" y="78">Frugten har kerner og</text><text x="14" y="96">indeholder meget vand.</text></g>
+      </g>
+    </svg>`
+  };
   function viewDiscover() {
     const moodBtn = (t, key) => `<button type="button" class="chip big" aria-pressed="${disc[key].has(t.id)}" data-tog="${t.id}" data-set="${key}"><span class="ce" aria-hidden="true">${t.e}</span><span class="cl">${t.label}</span></button>`;
-    const seg = (k, label, opts) => `<fieldset class="seg"><legend>${label}</legend>${opts.map(([v, t]) => `<label><input type="radio" name="${k}" value="${v}" ${disc[k] === v ? "checked" : ""}><span>${t}</span></label>`).join("")}</fieldset>`;
+    const seg = (k, label, opts) => `<fieldset class="seg" data-k="${k}" data-step="${segStep(k)}"><legend>${label}</legend><div class="seg-row"><div class="seg-opts">${opts.map(([v, t]) => `<label><input type="radio" name="${k}" value="${v}" ${disc[k] === v ? "checked" : ""}><span>${t}</span></label>`).join("")}</div>${SEG_ART[k]}</div></fieldset>`;
     app.innerHTML = `<div class="page-h"><h1>Opdag bøger</h1><p>Vælg hvordan bogen skal føles og hvad den skal handle om.</p></div>
       <div class="disc-layout">
         <aside class="filters" aria-label="Filtre">${pin("moods")}
@@ -229,6 +256,7 @@
     const results = filteredDiscover();
     app.querySelectorAll(".chip[data-tog]").forEach(c => c.setAttribute("aria-pressed", disc[c.dataset.set].has(c.dataset.tog)));
     app.querySelectorAll(".seg input").forEach(i => { i.checked = disc[i.name] === i.value; });
+    app.querySelectorAll(".seg[data-k]").forEach(s => { s.dataset.step = segStep(s.dataset.k); });
     const labels = { len: { Kort: "Kort", Mellem: "Mellem", Lang: "Lang" }, lvl: { "Let at læse": "Let", Middel: "Middel", Svær: "Svær" }, cat: { Fiktion: "Fortælling", Fakta: "Fakta" } };
     const act = [
       ...[...disc.moods].map(id => ["moods:" + id, TAGS[id].e + " " + TAGS[id].label]),

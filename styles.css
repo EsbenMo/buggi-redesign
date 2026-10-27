@@ -245,3 +245,56 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
 .picker-list .grp{display:flex;justify-content:space-between;gap:12px}
 .picker-list .grp .zr{letter-spacing:.02em;color:var(--yellow)}
 .picker-list li[data-lib] small{white-space:nowrap;margin-left:12px}
+
+/* Børneanimationer under filtrene (data-step 0-3 styrer udtrykket) */
+.seg-row{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.seg-opts{flex:1;min-width:0}
+.seg-art{flex:none;width:92px;height:auto;overflow:visible}
+.seg-art *{transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .35s ease,fill .4s ease}
+/* Bog: tykkere jo længere */
+.bk-bottom,.bk-top rect{fill:var(--coral)}
+.bk-pages{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.12)}
+.bk-top{transform:translateY(52px)}
+[data-k="len"][data-step="0"] .bk-pages{transform:scaleY(.4);opacity:.45}
+[data-k="len"][data-step="0"] .bk-top{transform:translateY(36px);opacity:.45}
+[data-k="len"][data-step="1"] .bk-pages{transform:scaleY(.12)}
+[data-k="len"][data-step="1"] .bk-top{transform:translateY(52px)}
+[data-k="len"][data-step="2"] .bk-pages{transform:scaleY(.5)}
+[data-k="len"][data-step="2"] .bk-top{transform:translateY(30px)}
+[data-k="len"][data-step="3"] .bk-pages{transform:scaleY(1)}
+[data-k="len"][data-step="3"] .bk-top{transform:translateY(0)}
+/* Ansigt: mere og mere overrasket, til sidst med ridderhjelm */
+.fc-head{fill:var(--yellow)}
+.fc-brows path{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round}
+.fc-eye{fill:#fff;stroke:var(--ink);stroke-width:2}
+.fc-pupil{fill:var(--ink)}
+.fc-mouth{fill:var(--ink)}
+.fc-helm path{fill:#b9c3dd;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.fc-helm .fc-visor{fill:#6c7898}
+.fc-helm .fc-knob{fill:var(--coral);stroke:var(--ink);stroke-width:3}
+.fc-helm{transform:translateY(-70px);opacity:0}
+.fc-brows,.fc-eyes,.fc-mouth{transform-box:fill-box;transform-origin:center}
+.fc-eye,.fc-pupil{transform-box:fill-box;transform-origin:center}
+[data-k="lvl"][data-step="0"] .fc-mouth{transform:scaleY(1.2)}
+[data-k="lvl"][data-step="1"] .fc-mouth{transform:scale(.9,1.6)}
+[data-k="lvl"][data-step="1"] .fc-brows{transform:translateY(-2px)}
+[data-k="lvl"][data-step="2"] .fc-brows{transform:translateY(-5px)}
+[data-k="lvl"][data-step="2"] .fc-eye{transform:scale(1.25)}
+[data-k="lvl"][data-step="2"] .fc-pupil{transform:scale(.8)}
+[data-k="lvl"][data-step="2"] .fc-mouth{transform:scale(1.1,3.4)}
+[data-k="lvl"][data-step="3"] .fc-brows{transform:translateY(-7px);opacity:0}
+[data-k="lvl"][data-step="3"] .fc-eye{transform:scale(1.5)}
+[data-k="lvl"][data-step="3"] .fc-pupil{transform:scale(.6)}
+[data-k="lvl"][data-step="3"] .fc-mouth{transform:scale(1.3,4.6)}
+[data-k="lvl"][data-step="3"] .fc-helm{transform:translateY(0);opacity:1}
+/* Æble: først frugt, så mere og mere overskrevet */
+.ap-body{fill:var(--coral)}
+.ap-stem{fill:none;stroke:#8a5a2b;stroke-width:5;stroke-linecap:round}
+.ap-leaf{fill:var(--green)}
+.ap-text text{font:700 9px 'Atkinson Hyperlegible',sans-serif;fill:var(--ink)}
+.ap-text .t1,.ap-text .t2{opacity:0}
+[data-k="cat"][data-step="1"] .ap-text .t1{opacity:1}
+[data-k="cat"][data-step="1"] .ap-body{fill:#ff9a82}
+[data-k="cat"][data-step="2"] .ap-text .t1,[data-k="cat"][data-step="2"] .ap-text .t2{opacity:1}
+[data-k="cat"][data-step="2"] .ap-body{fill:#fff4d6}
+@media (prefers-reduced-motion:reduce){.seg-art *{transition:none!important}}
