@@ -5,7 +5,7 @@ window.WHY = {
     t: "Bibliotekvælger i menuen, med label",
     f: [1, 9, 12, 19], sev: 3, n: "Noter: forældre og lærere hjælper barnet",
     before: "Første skærm var en dialog med fokus på \"Fortsæt uden at vælge\". Efter valget kunne man ikke ændre det uden at gå via et skjult ikon og en side mere.",
-    now: "Vælgeren ligger fast til venstre i hovedmenuen med label \"Vælg skole eller bibliotek\" og viser det valgte sted. Ét tryk åbner en søgbar liste med det samme. Ingen separat skolevælger-side.",
+    now: "Vælgeren ligger fast til venstre i hovedmenuen med label \"Vælg skole eller bibliotek\" og viser det valgte sted. Ét tryk åbner en søgbar liste med det samme. Ingen separat skolevælger-side. Valget bekræftes med en kort besked, der kan fortrydes, i stedet for en infoboks ovenpå indholdet.",
     why: "Barnet (og de voksne, der hjælper) kan altid se og skifte sted. Placeringen er ligestillet med navigationen, så den ikke kan misforstås som et lukkeknap-kryds."
   },
   onboarding: {
@@ -14,13 +14,6 @@ window.WHY = {
     before: "Fuldskærmsdialog, fokus på \"Fortsæt uden\", 234 poster i én kolonne, testposter, ingen forklaring på hvorfor man skal vælge.",
     now: "Et kort på forsiden, der ikke blokerer indholdet. Primær handling er \"Brug min placering\" eller at søge. Løftet i barnets sprog: \"så viser vi kun bøger, der står på hylden lige nu\". Listen er grupperet efter kommune/skole, har nærmeste øverst og ingen testposter.",
     why: "Casen: Buggi bruges primært, mens barnet står på biblioteket. Uden valgt sted mister barnet hylde og udlånsstatus – det er hele kernen i produktet. Derfor er valget forfremmet, men ikke tvunget."
-  },
-  statusbar: {
-    t: "Smal statuslinje i stedet for boks ovenpå indhold",
-    f: [6, 12], sev: 3, n: "Noter: bekræft valg",
-    before: "Infoboksen \"Vi viser dig bøger fra …\" lå ovenpå overskrifter, søgefelt og bogdata på mobil. Et utilsigtet tryk valgte \"Arden Skole\" uden bekræftelse.",
-    now: "En smal linje i flowet under menuen: \"Du er på Nørrebro Bibliotek – skift\". Valg bekræftes med en kort besked og kan fortrydes.",
-    why: "Systemstatus skal være synlig uden at dække noget (H1). Fortryd i stedet for bekræftelsesdialog passer til børn, der ikke læser instruktioner."
   },
   search: {
     t: "Søgefelt med label, stavetolerance og emner",
@@ -98,6 +91,20 @@ window.WHY = {
     before: "Uden valgt bibliotek forsvinder hyldeplacering og status uden forklaring.",
     now: "Hvis intet sted er valgt, siger bogsiden hvad barnet mister og tilbyder valget lige dér.",
     why: "Fejl skal forebygges i flowet, ikke først opdages i bunden af siden (H5)."
+  },
+  cookie: {
+    t: "Cookie-kort i børnesprog med ligeværdige valg",
+    f: [11], sev: 2, n: "",
+    before: "Første skærm på mobil var et cookievindue i fuld højde med voksensprog og en dominerende blå \"Tillad alle\".",
+    now: "Et lille kort nederst, der ikke blokerer siden. Forklaring i korte sætninger. To lige store knapper: \"Kun det nødvendige\" og \"Ja, husk mit bibliotek\".",
+    why: "På en fælles kiosk-PC og for børn må samtykke ikke føles som en forhindring eller et pres. Det første, barnet ser, skal være bøger."
+  },
+  about: {
+    t: "Om-side, tilgængelighed og feedback",
+    f: [19, 21], sev: 2, n: "Review: ingen synlig feedbackkanal; dialogen forklarer ikke hvorfor man skal vælge",
+    before: "Kun en mailadresse under Om. Ingen forklaring i trin og ingen vej for børn og forældre til at give feedback.",
+    now: "En Om-side i tre trin, med afsnit til børn, voksne og biblioteker (QR-koder og kiosktilstand), en tilgængelighedsforklaring og en feedbackformular med labels.",
+    why: "Fejl og ønsker opdages først, når brugerne kan fortælle dem. Bibliotekerne får samtidig en praktisk vej til at sætte QR-plakater op."
   },
   tweaks: {
     t: "Tilgængelighed som standard",

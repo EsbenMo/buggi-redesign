@@ -58,7 +58,7 @@
 <h3>1. Bibliotekvalg (prioritet 1)</h3>
 <div class="tr">
   <div><h4>I dag</h4><ul><li>Fuldskærmsdialog med fokus på “Fortsæt uden at vælge” (fund 1)</li><li>Gemt valg overtrumfer adressen, så delte links viser forkert beholdning (fund 2)</li><li>234 poster, testposter og “Københavns Hovedbibliotek” som eneste København (fund 9, 14)</li><li>Infoboksen dækker indhold på mobil, og et tryk valgte “Arden Skole” uden bekræftelse (fund 6, 12)</li></ul></div>
-  <div><h4>Prototypen</h4><ul><li>Vælger i hovedmenuen til venstre, med label “Vælg skole eller bibliotek” (mine noter)</li><li>“Hvor er du?”-kort på forsiden i stedet for en dialog, med løftet “så viser vi kun bøger, der står på hylden”</li><li>Nærmeste sted øverst via “Brug min placering”; grupperet efter kommune og skole; ingen testposter; ingen separat skolevælger-side</li><li>Smal statuslinje i stedet for boks; valget kan fortrydes</li><li>Adressen vinder: <code>?lib=kbh-nord</code> kan bruges i QR-koder på reolerne</li></ul></div>
+  <div><h4>Prototypen</h4><ul><li>Vælger i hovedmenuen til venstre, med label “Vælg skole eller bibliotek” (mine noter)</li><li>“Hvor er du?”-kort på forsiden i stedet for en dialog, med løftet “så viser vi kun bøger, der står på hylden”</li><li>Nærmeste sted øverst via “Brug min placering”; grupperet efter kommune og skole; ingen testposter; ingen separat skolevælger-side</li><li>Valget vises i menuen og bekræftes med en kort besked, der kan fortrydes. Ingen infoboks ovenpå indholdet, og ingen ekstra statuslinje, fordi vælgeren allerede viser stedet</li><li>Adressen vinder: <code>?lib=kbh-nord</code> kan bruges i QR-koder på reolerne</li></ul></div>
 </div>
 <p class="small">Prøv: <a href="index.html?lib=kbh-nord">index.html?lib=kbh-nord</a> åbner direkte på Nørrebro Bibliotek.</p>
 <h3>2. Opdag-filteret (prioritet 2)</h3>
@@ -88,6 +88,7 @@
 <tr><td>En bog under “Har du læst” sender mig bare ned på listen. Jeg forventede en side med beskrivelse og relaterede bøger (emneord, kategori, lix, alder).</td><td>Egen bogside med resumé og “Lyst til noget lignende?”: forslag med årsag og valg “Lidt lettere / Samme niveau / Lidt sværere”.</td></tr>
 </table></div>
 
+<h2 id="indhold">Mere indhold i prototypen</h2><ul><li><b>Over 30 bøger</b> med alder, sider, læsbarhed, genre, udgivelsesår og humør- og emnetags, inklusive faktabøger, så Fakta/Fortælling-valget giver mening.</li><li><b>Serier</b> (fx Dragerne fra Bjerget) med links mellem bind.</li><li><b>Reservér-link</b> til bibliotekets hjemmeside på bogsiden. Buggi selv kan ikke reservere, ifølge casen.</li><li><b>Flere rækker på forsiden</b> med ord som overskrifter: Halloween, hjertevarme, sjove, fakta og aldersvalgte bøger.</li><li><b>Om Buggi</b> i tre trin, for børn, voksne og biblioteker, med tilgængelighed og feedbackformular.</li><li><b>Cookie-kort</b> i børnesprog og <b>kopiér link</b> til en bog, der bevarer biblioteket i adressen.</li></ul>
 <h2 id="behold">Det jeg bevarede</h2>
 <ul>
   <li><b>“Find på hylden”</b>: reviewets stærkeste element. Jeg har forklaret den grønne prik og gjort handlingen til bogsidens primære knap.</li>
@@ -115,7 +116,7 @@
   <li>Mobil er emuleret, ikke testet på en fysisk telefon.</li>
   <li>Fundene er hypoteser, ikke bevis. En heuristisk evaluering kan ikke erstatte test med børn.</li>
   <li>To antagelser bør tjekkes i DBC’s data, før noget bygges: at mange sessioner i dag sker uden valgt bibliotek, og at mange børn bruger en filial frem for hovedbiblioteket.</li>
-  <li>Prototypen simulerer placering, udlånsstatus og bogdata. Cookie-vinduet er ikke med: i produktionen bør samtykke have ligeværdige valg og børnevenligt sprog (fund 11).</li>
+  <li>Prototypen simulerer placering, udlånsstatus, bogdata, cookie-valg og feedbackformularen (den sender ikke noget). Teksterne om cookies og tilgængelighed er forslag, ikke DBC’s juridiske tekst.</li>
   <li>Jeg har ikke undersøgt teknik, beholdningsdata eller DBC’s øvrige begrænsninger. Der kan være gode grunde til nuværende valg, jeg ikke kender.</li>
 </ul>
 
@@ -137,12 +138,12 @@ const F=[
 [3,"H4 Konsistens","Flere valgte emojis giver flere bøger (1.255 → 1.332)",3,"Opdag: OG-logik + regel i klartekst"],
 [4,"H5 Fejlforebyggelse","Emoji-skyen overlapper og omarrangeres efter første klik",3,"Opdag: fast gitter"],
 [5,"H9 Fejlhåndtering","“hary poter” giver “Øv bøv”, uden “Mente du …?”",3,"Søg: fejltolerant + besked"],
-[6,"H3 Brugerkontrol","Infoboksen bliver stående og dækker indhold på mobil",3,"Smal statuslinje i flowet"],
+[6,"H3 Brugerkontrol","Infoboksen bliver stående og dækker indhold på mobil",3,"Valg vises i menuen; ingen boks ovenpå indhold"],
 [7,"H1 Systemstatus","Opdag-resultater starter under skærmkanten",2,"Fast “Vis N bøger”-knap"],
 [8,"H1 Systemstatus","Den grønne prik på “Find på hylden” forklares ikke",2,"Forklaring på bogside og hylde-side"],
 [9,"H2 Virkelighed","Bibliotekslisten matcher ikke barnets virkelighed",2,"Grupperet efter kommune/skole, nærmeste øverst"],
 [10,"H2 Virkelighed","Forsiden fremhæver bøger for 11–16 år til 8–12-årige",2,"Standard: 8–12 år"],
-[11,"H2 Virkelighed","Første skærm er et cookievindue i voksensprog",2,"Ikke med i prototypen (anbefaling i forbehold)"],
+[11,"H2 Virkelighed","Første skærm er et cookievindue i voksensprog",2,"Cookie-kort i børnesprog med ligeværdige valg"],
 [12,"H3 Brugerkontrol","Valg af bibliotek bekræftes ikke",2,"Bekræftelse med “Fortryd”"],
 [13,"H4 Konsistens","Menuen har tekst på PC, kun ikoner på mobil",2,"Tabbar med ikon + tekst"],
 [14,"H5 Fejlforebyggelse","Testposter kan vælges i produktion",2,"Fjernet fra listen"],
@@ -152,7 +153,7 @@ const F=[
 [18,"H7 Fleksibilitet","Søgning kun på titel og forfatter, ikke emne",2,"Emnesøgning"],
 [19,"H10 Hjælp","Dialogen forklarer ikke, hvad barnet får ud af at vælge bibliotek",2,"Løfte i barnets sprog"],
 [20,"H8 Minimalisme","Travl Halloween-baggrund og animationer",1,"Dæmpet sæsontema"],
-[21,"H10 Hjælp","Ingen synlig feedbackkanal",1,"Ikke løst – bør tilføjes i produktionen"]];
+[21,"H10 Hjælp","Ingen synlig feedbackkanal",1,"Om-side med feedbackformular og link i bunden"]];
 document.querySelector("#ftab tbody").innerHTML=F.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="sev s${r[3]}">${r[3]}</span></td><td>${r[4]}</td></tr>`).join("");
 </script>
 </body>

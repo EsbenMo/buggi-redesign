@@ -144,10 +144,6 @@
     wirePickers($("#hdr"));
   }
 
-  function statusBar() {
-    return lib() ? `<div class="status" role="status"><span>📍 Du er på <b>${esc(lib().name)}</b></span> <button class="link" type="button" data-open-picker>Skift</button>${pin("statusbar")}</div>` : "";
-  }
-
   function searchBox(val = "") {
     return `<form class="searchbox" role="search" data-search>
       <label for="q">Søg efter bøger</label>
@@ -171,14 +167,17 @@
       <div class="onb-ill" aria-hidden="true">📚 → 🚶 → 📖</div>
       ${libPicker("lib-onb", "Vælg skole eller bibliotek", false)}
       <p class="small">Vil du bare kigge? Bladr videre herunder – du kan altid vælge senere.</p></section>`;
-    app.innerHTML = `${statusBar()}
-      <div class="hero"><h1>Find din næste bog</h1>${searchBox()}</div>
+    app.innerHTML = `<div class="hero"><h1>Find din næste bog</h1>${searchBox()}</div>
       ${onb}
       <div class="rows">${pin("rows")}
         ${row("Uhyggelige bøger til Halloween", "Til dig, der tør", scary)}
         ${row("Har du læst Percy Jackson?", "Prøv også disse", relP)}
-        ${row("Bøger til 8–12 år", "Valgt til din alder", target.slice(0, 8))}
-      </div>`;
+        ${row("Hjertevarme bøger", "Når du har lyst til at blive glad", target.filter(b => b.tags.includes("hjertevarm")).slice(0, 8))}
+        ${row("Sjove bøger", "Hvor du kommer til at grine", target.filter(b => b.tags.includes("sjov")).slice(0, 8))}
+        ${row("Fakta: dyr, rummet og fortid", "Bøger hvor du lærer noget", target.filter(b => b.cat === "Fakta"))}
+        ${row("Bøger til 8–12 år", "Valgt til din alder", target.slice(0, 10))}
+      </div>
+      <section class="about-teaser" aria-labelledby="ab-h"><h2 id="ab-h">Hvad er Buggi?</h2><p>Buggi hjælper dig med at finde en god bog. Vælg dit bibliotek, så ser du, om bogen står på hylden – og hvor.</p><a class="cta" href="#/about">Læs mere om Buggi</a></section>`;
     wirePickers(app);
   }
 
@@ -187,8 +186,7 @@
     const moodBtn = (t, set) => `<button type="button" class="chip big" aria-pressed="${set.has(t.id)}" data-tog="${t.id}" data-set="${set === disc.moods ? "moods" : "themes"}"><span class="ce" aria-hidden="true">${t.e}</span><span class="cl">${t.label}</span></button>`;
     const seg = (k, label, opts) => `<fieldset class="seg"><legend>${label}</legend>${opts.map(([v, t]) => `<label><input type="radio" name="${k}" value="${v}" ${disc[k] === v ? "checked" : ""}><span>${t}</span></label>`).join("")}</fieldset>`;
     const hints = [...disc.moods, ...disc.themes].map(id => `${TAGS[id].label}: ${TAGS[id].hint}`);
-    app.innerHTML = `${statusBar()}
-      <div class="page-h"><h1>Opdag bøger</h1><p>Vælg hvordan bogen skal føles og hvad den skal handle om.</p></div>
+    app.innerHTML = `<div class="page-h"><h1>Opdag bøger</h1><p>Vælg hvordan bogen skal føles og hvad den skal handle om.</p></div>
       <div class="filters">${pin("moods")}
         <section aria-labelledby="g1"><h2 id="g1">Hvordan skal bogen føles?</h2><div class="grid">${MOODS.map(t => moodBtn(t, disc.moods)).join("")}</div></section>
         <section aria-labelledby="g2"><h2 id="g2">Hvad skal den handle om?</h2><div class="grid">${THEMES.map(t => moodBtn(t, disc.themes)).join("")}</div></section>
@@ -223,7 +221,7 @@
         <h2 class="res-h">${results.length} ${results.length === 1 ? "resultat" : "resultater"}</h2><div class="list">${results.map(b => bookCard(b)).join("")}</div>`;
       else out = `<div class="empty"><h2>Vi fandt ikke “${esc(q)}”</h2><p>Prøv et emne i stedet:</p><div class="chips">${["heste", "fodbold", "spøgelser", "venskab"].map(t => `<a class="chip" href="#/search?q=${t}">${t}</a>`).join("")}</div></div>`;
     }
-    app.innerHTML = `${statusBar()}<div class="page-h"><h1>Søg</h1></div>${searchBox(q)}<div class="search-out">${out}</div>`;
+    app.innerHTML = `<div class="page-h"><h1>Søg</h1></div>${searchBox(q)}<div class="search-out">${out}</div>`;
     wirePickers(app);
   }
 
@@ -232,16 +230,17 @@
     const rel = related(b, mode);
     const avail = lib()
       ? `<div class="availbox ${b.av ? "yes" : "no"}">${pin("avail")}<p><span class="avail ${b.av ? "yes" : "no"}">${b.av ? "På hylden" : "Udlånt"}</span> <b>${esc(lib().name)}</b></p>
-          ${b.av ? `<p class="small"><span class="dotg" aria-hidden="true"></span> Grøn prik betyder: bogen står på hylden lige nu.</p><a class="cta" href="#/shelf/${b.id}">Find på hylden</a>` : `<p class="small">Bogen er ikke på hylden lige nu. Se lignende bøger nedenfor.</p>`}</div>`
+          ${b.av ? `<p class="small"><span class="dotg" aria-hidden="true"></span> Grøn prik betyder: bogen står på hylden lige nu.</p><a class="cta" href="#/shelf/${b.id}">Find på hylden</a>` : `<p class="small">Bogen er ikke på hylden lige nu. Du kan reservere den på bibliotekets hjemmeside, eller se lignende bøger nedenfor.</p>`}<p class="small res-link"><a href="https://bibliotek.dk" target="_blank" rel="noopener">Reservér på bibliotekets hjemmeside (åbner i nyt vindue)</a></p></div>`
       : `<div class="availbox none">${pin("avail")}<p><b>Står den på hylden?</b> Vælg dit bibliotek, så ser du det her – og hvor du finder bogen.</p>${libPicker("lib-book", "Vælg skole eller bibliotek", false)}</div>`;
-    app.innerHTML = `${statusBar()}
-      <a class="back" href="#/">← Tilbage</a>
+    app.innerHTML = `<a class="back" href="#/">← Tilbage</a>
       <article class="book">${pin("book")}
         <div class="book-top">${cover(b, true)}<div><h1>${esc(b.title)}</h1><p class="by">af ${esc(b.author)}</p>
-          <ul class="facts"><li>${b.age[0]}–${b.age[1]} år</li><li>${b.pages} sider</li><li>${lixLabel(b.lix)}</li><li>${esc(b.cat)}</li></ul></div></div>
+          <ul class="facts"><li>${b.age[0]}–${b.age[1]} år</li><li>${b.pages} sider</li><li>${lixLabel(b.lix)}</li><li>${esc(b.cat)}</li><li>Udgivet ${b.year}</li></ul></div></div>
         <p class="blurb">${esc(b.d)}</p>
         <div class="tags"><span class="sr">Humør og emner:</span>${b.tags.map(tagChip).join("")}</div>
         ${avail}
+        ${seriesBox(b)}
+        <p class="share"><button class="ghost sm" type="button" data-share="${b.id}">🔗 Kopiér link til bogen</button></p>
       </article>
       <section class="rel" aria-labelledby="rel-h">${pin("related")}<h2 id="rel-h">Lyst til noget lignende?</h2>
         <fieldset class="seg"><legend>Hvor svær skal den næste være?</legend>${[["lettere", "Lidt lettere"], ["samme", "Samme niveau"], ["svaerere", "Lidt sværere"]].map(([v, t]) => `<label><input type="radio" name="mode" value="${v}" ${mode === v ? "checked" : ""}><span>${t}</span></label>`).join("")}</fieldset>
@@ -251,10 +250,49 @@
     wirePickers(app);
   }
 
+  function seriesBox(b) {
+    if (!b.series) return "";
+    const s = b.series;
+    return `<section class="series" aria-labelledby="ser-h"><h2 id="ser-h">Serie: ${esc(s.name)}</h2><ol>${s.ids.map(i => { const x = bookById(i); return `<li>${i === b.id ? `<b aria-current="true">Bog ${x.series.n}: ${esc(x.title)} (du kigger på denne)</b>` : `<a href="#/book/${x.id}">Bog ${x.series.n}: ${esc(x.title)}</a>`}</li>`; }).join("")}</ol></section>`;
+  }
+
+  function viewAbout() {
+    app.innerHTML = `<div class="page-h"><h1>Om Buggi</h1></div>
+      <div class="prose">
+        <h2>Til dig, der leder efter en bog</h2>
+        <p>Buggi hjælper dig med at finde en bog, du får lyst til at læse. Vælg, hvordan bogen skal føles og hvad den skal handle om, eller søg efter en titel, en forfatter eller et emne.</p>
+        <ol class="steps">
+          <li><b>1</b> Vælg din skole eller dit bibliotek.</li>
+          <li><b>2</b> Find en bog, du får lyst til.</li>
+          <li><b>3</b> Tryk “Find på hylden”, og gå hen og tag den.</li>
+        </ol>
+        <p>Buggi har over 11.000 titler til børn i 3.–5. klasse. Du kan ikke låne bøger her. Det gør du på biblioteket.</p>
+        <h2>Til forældre og lærere</h2>
+        <p>Skoler og biblioteker med abonnement ser deres egne titler, om bogen står på hylden, og hvor den står. Du kan reservere en bog på bibliotekets egen hjemmeside via linket på bogens side.</p>
+        <p>Buggi er lavet, så børn både med og uden læsevanskeligheder kan bruge den: store knapper, ord ved alle ikoner og søgning, der tåler stavefejl.</p>
+        <h2>Til biblioteker</h2>
+        <ul><li><b>QR-koder på reolerne:</b> et link som <code>?lib=kbh-nord</code> åbner Buggi direkte på dit bibliotek. Valget i adressen vinder altid over det, en tidligere bruger har gemt.</li>
+        <li><b>Kiosktilstand:</b> på en fælles PC kan Buggi køre i fuld skærm med biblioteket indlæst.</li></ul>
+        <h2 id="tilg">Tilgængelighed</h2>
+        <p>Prototypen følger WCAG 2.2 niveau AA som mål: kontrast, synligt fokus, labels på alle felter, store trykflader, tastaturbetjening og respekt for “reducér bevægelse”. Skrifttypen Atkinson Hyperlegible er valgt for sin læsbarhed.</p>
+        <h2 id="feedback">Fortæl os, hvad du synes</h2>
+        <p>Mangler der en bog? Er noget svært at finde? Skriv her, hvis du er barn eller voksen.</p>
+        <form class="fb" data-fb>
+          <label for="fb-who">Jeg er</label>
+          <select id="fb-who" name="who"><option>et barn</option><option>en forælder</option><option>en lærer eller bibliotekar</option></select>
+          <label for="fb-msg">Hvad vil du fortælle?</label>
+          <textarea id="fb-msg" name="msg" rows="4" required></textarea>
+          <button class="cta" type="submit">Send</button>
+          <p class="small">Prototype: beskeden sendes ikke.</p>
+        </form>
+        <p class="fb-ok" role="status" hidden>Tak! Vi har modtaget din besked. (Prototype: den blev ikke sendt.)</p>
+      </div>`;
+  }
+
   function viewShelf(id) {
     const b = bookById(id); if (!b) return viewHome();
     const [s1, s2, s3] = b.shelf;
-    app.innerHTML = `${statusBar()}<a class="back" href="#/book/${b.id}">← Tilbage til bogen</a>
+    app.innerHTML = `<a class="back" href="#/book/${b.id}">← Tilbage til bogen</a>
       <section class="shelfpage">${pin("shelf")}<h1>Find “${esc(b.title)}” på hylden</h1>
         <ol class="steps"><li><b>1</b> Find skiltet <mark>${esc(s1)}</mark></li><li><b>2</b> Så skiltet <mark>${esc(s2)}</mark></li><li><b>3</b> Led efter forfatterens efternavn: <mark>${esc(s3)}</mark></li></ol>
         <svg class="shelfsvg" viewBox="0 0 360 250" role="img" aria-label="Reol med skiltene ${esc(s1)}, ${esc(s2)} og bogstavet ${esc(s3)}. Bogen står på midterste hylde.">
@@ -283,8 +321,9 @@
     else if (v === "search") viewSearch(new URLSearchParams(qs || "").get("q") || "");
     else if (v === "book") viewBook(parts[1]);
     else if (v === "shelf") viewShelf(parts[1]);
+    else if (v === "about") viewAbout();
     else viewHome();
-    document.title = ({ discover: "Opdag", search: "Søg", book: "Bog", shelf: "Find på hylden" }[v] || "Find din næste bog") + " – Buggi (redesign-prototype)";
+    document.title = ({ discover: "Opdag", search: "Søg", book: "Bog", shelf: "Find på hylden", about: "Om Buggi" }[v] || "Find din næste bog") + " – Buggi (redesign-prototype)";
     $("#why-drawer").hidden = true;
     document.body.classList.toggle("why-on", whyOn);
     $("#why-toggle").setAttribute("aria-pressed", whyOn);
@@ -292,9 +331,10 @@
   window.addEventListener("hashchange", () => { route(); const m = $("#app"); m.focus({ preventScroll: true }); window.scrollTo(0, 0); });
 
   // delegerede events
-  document.addEventListener("submit", e => { if (e.target.matches("[data-search]")) { e.preventDefault(); const q = new FormData(e.target).get("q").trim(); location.hash = "#/search" + (q ? "?q=" + encodeURIComponent(q) : ""); if (location.hash === "#/search?q=" + encodeURIComponent(q)) route(); } });
+  document.addEventListener("submit", e => { if (e.target.matches("[data-fb]")) { e.preventDefault(); e.target.hidden = true; const ok = $(".fb-ok"); ok.hidden = false; ok.tabIndex = -1; ok.focus(); return; } if (e.target.matches("[data-search]")) { e.preventDefault(); const q = new FormData(e.target).get("q").trim(); location.hash = "#/search" + (q ? "?q=" + encodeURIComponent(q) : ""); if (location.hash === "#/search?q=" + encodeURIComponent(q)) route(); } });
   document.addEventListener("click", e => {
-    const t = e.target.closest("[data-open-picker]"); if (t) { $("#lib-top").click(); }
+    const sh = e.target.closest("[data-share]"); if (sh) { const u = location.origin + location.pathname + (libId ? "?lib=" + libId : "") + "#/book/" + sh.dataset.share; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast("Linket er kopieret."), () => toast("Kunne ikke kopiere. Kopiér adressen i browseren.")); }
+    const an = e.target.closest("[data-anchor]"); if (an) setTimeout(() => document.getElementById(an.dataset.anchor)?.scrollIntoView(), 120);
     const w = e.target.closest(".why-pin"); if (w) { e.preventDefault(); showWhy(w.dataset.why); }
     if (!e.target.closest("[data-picker]")) document.querySelectorAll(".picker-pop").forEach(p => { p.hidden = true; p.parentElement.querySelector(".picker-btn").setAttribute("aria-expanded", "false"); });
   });
@@ -310,5 +350,17 @@
   $("#why-toggle").addEventListener("click", () => { whyOn = !whyOn; store.set("buggi-why", whyOn ? "1" : "0"); document.body.classList.toggle("why-on", whyOn); $("#why-toggle").setAttribute("aria-pressed", whyOn); if (!whyOn) $("#why-drawer").hidden = true; });
   document.addEventListener("keydown", e => { if (e.key === "Escape") $("#why-drawer").hidden = true; });
 
+  // Cookie-kort: ikke en dialog, ligeværdige valg, børnesprog (fund 11)
+  function cookieCard() {
+    if (store.get("buggi-cookies")) return;
+    const c = document.createElement("section");
+    c.className = "cookies"; c.setAttribute("aria-labelledby", "ck-h");
+    c.innerHTML = `<h2 id="ck-h">Må Buggi huske lidt?</h2><p>Buggi kan huske dit bibliotek, så du ikke skal vælge igen. Vi bruger ikke cookies til reklamer.</p>
+      <div class="ck-btns"><button type="button" data-ck="nec">Kun det nødvendige</button><button type="button" data-ck="all">Ja, husk mit bibliotek</button></div>
+      <button class="why-pin" data-why="cookie" aria-label="Hvorfor ser det sådan ud? Cookie-kort">?</button>`;
+    document.body.appendChild(c);
+    c.addEventListener("click", e => { const b = e.target.closest("[data-ck]"); if (!b) return; store.set("buggi-cookies", b.dataset.ck); c.remove(); });
+  }
+  cookieCard();
   route();
 })();
