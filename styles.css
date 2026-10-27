@@ -229,3 +229,14 @@ body.why-on .why-pin{display:block;animation:none}
   main{padding-bottom:60px}
 }
 @media (max-width:899px){ .results .active{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0} }
+
+/* Diskret, blød scrollbar */
+html,.rail,.filters,.picker-list,.drawer{scrollbar-width:thin;scrollbar-color:rgba(195,203,230,.28) transparent}
+html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(195,203,230,.5) transparent}
+.drawer{scrollbar-color:rgba(16,26,53,.3) transparent}
+@supports not (scrollbar-color:auto){
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(195,203,230,.28);border-radius:999px;border:2px solid transparent;background-clip:content-box}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(195,203,230,.5);background-clip:content-box}
+}
