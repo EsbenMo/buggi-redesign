@@ -65,14 +65,16 @@ Object.entries(SER).forEach(([name, ids]) => ids.forEach((id, i) => { const b = 
 BOOKS.forEach((b, i) => { b.year = 2012 + (i * 7) % 13; });
 
 window.LIBRARIES = [
-  { id: "kbh-nord", name: "Nørrebro Bibliotek", group: "Københavns Biblioteker", near: true, dist: "0,4 km" },
-  { id: "kbh-hoved", name: "Hovedbiblioteket", group: "Københavns Biblioteker", dist: "2,1 km" },
-  { id: "kbh-ama", name: "Amager Bibliotek", group: "Københavns Biblioteker", dist: "4,3 km" },
-  { id: "kbh-ves", name: "Vesterbro Bibliotek", group: "Københavns Biblioteker", dist: "3,0 km" },
-  { id: "aarhus", name: "Dokk1, Aarhus", group: "Aarhus Kommune" },
-  { id: "aarhus-gellerup", name: "Gellerup Bibliotek", group: "Aarhus Kommune" },
-  { id: "odense", name: "Odense Hovedbibliotek", group: "Odense Kommune" },
-  { id: "htk", name: "Høje-Taastrup Bibliotek", group: "Høje-Taastrup Kommune" },
-  { id: "arden", name: "Arden Skole", group: "Skoler", school: true },
-  { id: "birkerod", name: "Birkerød Skole", group: "Skoler", school: true }
+  { id: "kbh-nord", zip: "2200", name: "Nørrebro Bibliotek", group: "Københavns Biblioteker", near: true, dist: "0,4 km" },
+  { id: "kbh-hoved", zip: "1620", name: "Hovedbiblioteket", group: "Københavns Biblioteker", dist: "2,1 km" },
+  { id: "kbh-ama", zip: "2300", name: "Amager Bibliotek", group: "Københavns Biblioteker", dist: "4,3 km" },
+  { id: "kbh-ves", zip: "1620", name: "Vesterbro Bibliotek", group: "Københavns Biblioteker", dist: "3,0 km" },
+  { id: "aarhus", zip: "8000", name: "Dokk1, Aarhus", group: "Aarhus Kommune" },
+  { id: "aarhus-gellerup", zip: "8220", name: "Gellerup Bibliotek", group: "Aarhus Kommune" },
+  { id: "odense", zip: "5000", name: "Odense Hovedbibliotek", group: "Odense Kommune" },
+  { id: "htk", zip: "2630", name: "Høje-Taastrup Bibliotek", group: "Høje-Taastrup Kommune" },
+  { id: "arden", zip: "9510", name: "Arden Skole", group: "Skoler", school: true },
+  { id: "birkerod", zip: "3460", name: "Birkerød Skole", group: "Skoler", school: true }
 ];
+
+window.LIB_ZIPS = { "Københavns Biblioteker": [1000, 2500], "Aarhus Kommune": [8000, 8270], "Odense Kommune": [5000, 5270], "Høje-Taastrup Kommune": [2630, 2630] };

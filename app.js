@@ -79,6 +79,7 @@
   }
 
   // ---- bibliotekvælger (combobox) ----
+  const zr = g => { const r = (window.LIB_ZIPS || {})[g]; return r ? (r[0] === r[1] ? r[0] : r[0] + "–" + r[1]) : ""; };
   function libPicker(id, label, compact) {
     const cur = lib();
     const groups = [...new Set(LIBS.map(l => l.group))];
@@ -88,11 +89,11 @@
         <span aria-hidden="true">🏫</span> <span class="picker-val">${cur ? esc(cur.name) : "Ikke valgt endnu"}</span> <span class="chev" aria-hidden="true">▾</span>
       </button>
       <div class="picker-pop" hidden>
-        <label class="sr" for="${id}-q">Søg efter skole eller bibliotek</label>
-        <input class="picker-q" id="${id}-q" type="search" placeholder="Skriv navnet på din skole eller dit bibliotek" autocomplete="off">
+        <label class="sr" for="${id}-q">Søg efter skole, bibliotek eller postnummer</label>
+        <input class="picker-q" id="${id}-q" type="search" placeholder="Skriv navn eller postnummer" autocomplete="off">
         <button class="geo" type="button">📍 Brug min placering</button>
         <ul class="picker-list" role="listbox" aria-label="Skoler og biblioteker">
-          ${groups.map(g => `<li class="grp" role="presentation">${esc(g)}</li>` + LIBS.filter(l => l.group === g).map(l => `<li role="option" tabindex="-1" data-lib="${l.id}" aria-selected="${l.id === libId}">${esc(l.name)}${l.dist ? `<small>${l.dist}</small>` : ""}</li>`).join("")).join("")}
+          ${groups.map(g => `<li class="grp" role="presentation" data-g="${esc(g)}"><span>${esc(g)}</span>${zr(g) ? `<span class="zr">${zr(g)}</span>` : ""}</li>` + LIBS.filter(l => l.group === g).map(l => `<li role="option" tabindex="-1" data-lib="${l.id}" aria-selected="${l.id === libId}"><span>${esc(l.name)}</span><small>${l.zip}${l.dist ? " · " + l.dist : ""}</small></li>`).join("")).join("")}
         </ul>
       </div>
     </div>`;
@@ -103,8 +104,15 @@
       const btn = $(".picker-btn", p), pop = $(".picker-pop", p), q = $(".picker-q", p);
       const open = o => { pop.hidden = !o; btn.setAttribute("aria-expanded", o); if (o) { q.value = ""; filter(""); q.focus(); } };
       const filter = v => {
-        const n = norm(v); let any = false;
-        pop.querySelectorAll("li[data-lib]").forEach(li => { const show = !n || norm(li.textContent).includes(n); li.hidden = !show; if (show) any = true; });
+        const n = norm(v).trim(); let any = false;
+        const zipQ = /^\d{1,4}$/.test(n) ? n : "";
+        const own = zipQ ? LIBS.filter(l => l.zip.startsWith(zipQ)).map(l => l.id) : [];
+        const inRange = id => { const l = LIBS.find(x => x.id === id), r = (window.LIB_ZIPS || {})[l.group]; return zipQ.length === 4 && r && +zipQ >= r[0] && +zipQ <= r[1]; };
+        pop.querySelectorAll("li[data-lib]").forEach(li => {
+          const id = li.dataset.lib;
+          const show = !n || (zipQ ? (own.length ? own.includes(id) : inRange(id)) : norm(li.textContent).includes(n));
+          li.hidden = !show; if (show) any = true;
+        });
         pop.querySelectorAll(".grp").forEach(g => { let s = g.nextElementSibling, vis = false; while (s && !s.classList.contains("grp")) { if (!s.hidden) vis = true; s = s.nextElementSibling; } g.hidden = !vis; });
       };
       btn.addEventListener("click", () => open(pop.hidden));

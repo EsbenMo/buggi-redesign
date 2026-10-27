@@ -240,3 +240,8 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
   ::-webkit-scrollbar-thumb{background:rgba(195,203,230,.28);border-radius:999px;border:2px solid transparent;background-clip:content-box}
   ::-webkit-scrollbar-thumb:hover{background:rgba(195,203,230,.5);background-clip:content-box}
 }
+
+/* Postnummer-spænd i bibliotekslisten */
+.picker-list .grp{display:flex;justify-content:space-between;gap:12px}
+.picker-list .grp .zr{letter-spacing:.02em;color:var(--yellow)}
+.picker-list li[data-lib] small{white-space:nowrap;margin-left:12px}
