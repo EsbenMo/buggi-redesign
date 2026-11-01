@@ -42,23 +42,24 @@
 <main>
 <h1>Redesign af buggi.dk</h1>
 <p class="lead">Rapport bag prototypen: hvad reviewet fandt, hvad jeg ændrede, og hvorfor. Lavet af Esben Mortensen som case til DBC digital.</p>
-<p class="small toc"><a href="#resume">Resumé</a><a href="#valg">Tre udfordringer og løsninger</a><a href="#noter">Mine egne noter</a><a href="#behold">Det jeg beholdt</a><a href="#fund">Alle fund</a><a href="#test">Sådan testes det</a><a href="#forbehold">Forbehold</a><a href="#kilder">Kilder</a></p>
+<p class="small toc"><a href="#resume">Resumé</a><a href="#valg">Tre udfordringer og løsninger</a><a href="#noter">Mine egne noter</a><a href="#ekstra">Ekstra: ting at overveje</a><a href="#behold">Det jeg beholdt</a><a href="#fund">Alle fund</a><a href="#test">Sådan testes det</a><a href="#forbehold">Forbehold</a><a href="#kilder">Kilder</a></p>
 <div class="box"><b>Vigtigt:</b> Prototypen er en opfattelse af, hvordan Buggi kunne fungere, med eksempeldata og opfundne bogbeskrivelser (undtagen to kendte serier fra reviewet). Den er ikke en officiel DBC-tjeneste, og tallene i reviewet er fra én evaluators gennemgang den 26. oktober 2026.</div>
 
 <h2 id="resume">Resumé</h2>
 <p>Casen beder om et hurtigt review på højst to timer uden research. Ifølge casen er Buggi primært designet til at hjælpe børn i 3.–5. klasse, mens de står på biblioteket og skal finde en bog at låne. Det er den præmis, jeg har vægtet højest: vejen fra inspiration til bog i hånden.</p>
 <p>Reviewet fandt 21 problemer, hvoraf 6 er alvorlige (severity 3 af 4). De samler sig i tre udfordringer, som prototypen løser i denne rækkefølge:</p>
 <ol class="t">
-  <li><b>Valg af bibliotek bryder forbindelsen til hylden.</b> Uden valgt sted forsvinder hyldeplacering og udlånsstatus – og første skærm gør det let at springe valget over.</li>
-  <li><b>Opdag-filteret er svært at forstå og ramme.</b> Emojis uden navne, overlap på mobil og et filter, der giver flere bøger, når man vælger mere.</li>
+  <li><b>Fra bog til hylde: valget af bibliotek.</b> Barnet skal fra bog til hylde, men skal vælge sted i en dialog og trykke sig igennem flere trin, og bøger, der ikke findes på det valgte sted, forsvinder uden forklaring.</li>
+  <li><b>Opdag: filtre uden ord.</b> Emojis uden navne (kun ved hover), overlap på mobil, emojis der ser forskellige ud på Android og iOS, og et filter, der giver flere bøger, når man vælger mere.</li>
   <li><b>Søgningen tilgiver ikke stavefejl.</b> “hary poter” giver “Øv bøv”, selv om målgruppen omfatter ordblinde børn.</li>
 </ol>
+<p><b>Designprincip (antagelse, skal testes):</b> Buggi skal få barnet hurtigt til hylden og minimere tiden på telefonen på biblioteket, så barnet kan være til stede med voksne og andre børn. Inspirationen skal være let, ikke tung, animeret eller fuld af valgmuligheder. Den holdning styrer alle ændringer i prototypen, og derfor er den tidligere animerede baggrund og de animerede filtre fjernet igen.</p>
 
 <h2 id="valg">Tre udfordringer og hvad jeg ændrede</h2>
-<h3>1. Bibliotekvalg (prioritet 1)</h3>
+<h3>1. Fra bog til hylde: valg af bibliotek (prioritet 1)</h3>
 <div class="tr">
-  <div><h4>I dag</h4><ul><li>Fuldskærmsdialog med fokus på “Fortsæt uden at vælge” (fund 1)</li><li>Gemt valg overtrumfer adressen, så delte links viser forkert beholdning (fund 2)</li><li>234 poster, testposter og “Københavns Hovedbibliotek” som eneste København (fund 9, 14)</li><li>Infoboksen dækker indhold på mobil, og et tryk valgte “Arden Skole” uden bekræftelse (fund 6, 12)</li></ul></div>
-  <div><h4>Prototypen</h4><ul><li>Vælger i hovedmenuen til venstre, med label “Vælg skole eller bibliotek” (mine noter)</li><li>“Hvor er du?”-kort på forsiden i stedet for en dialog, med løftet “så viser vi kun bøger, der står på hylden”</li><li>Nærmeste sted øverst via “Brug min placering”; grupperet efter kommune og skole; ingen testposter; ingen separat skolevælger-side</li><li>Valget vises i menuen og bekræftes med en kort besked, der kan fortrydes. Ingen infoboks ovenpå indholdet, og ingen ekstra statuslinje, fordi vælgeren allerede viser stedet</li><li>Adressen vinder: <code>?lib=kbh-nord</code> kan bruges i QR-koder på reolerne</li></ul></div>
+  <div><h4>I dag</h4><ul><li>Fuldskærmsdialog med fokus på “Fortsæt uden at vælge” (fund 1)</li><li>Gemt valg overtrumfer adressen, så delte links viser forkert beholdning (fund 2)</li><li>234 poster, testposter og “Københavns Hovedbibliotek” som eneste København (fund 9, 14)</li><li>Infoboksen dækker indhold på mobil, og et tryk valgte “Arden Skole” uden bekræftelse (fund 6, 12)</li><li>Fra bogen til hylden kræver mange trin: Find bog, en knap til at vælge skole eller bibliotek, et tryk i søgefeltet og så tekst (4 trin)</li><li>Eksempel fra mine noter: “Zombiejagt” fandtes ikke på Nørrebro Bibliotek, men på Nørre Snede, og det blev ikke forklaret</li></ul></div>
+  <div><h4>Prototypen</h4><ul><li>Vælger i hovedmenuen til venstre, med label “Vælg skole eller bibliotek” (mine noter)</li><li>“Hvor er du?”-kort på forsiden i stedet for en dialog, med løftet “så viser vi kun bøger, der står på hylden”</li><li>Nærmeste sted øverst via “Brug min placering”; grupperet efter kommune og skole; ingen testposter; ingen separat skolevælger-side</li><li>Valget vises i menuen og bekræftes med en kort besked, der kan fortrydes. Ingen infoboks ovenpå indholdet, og ingen ekstra statuslinje, fordi vælgeren allerede viser stedet</li><li>Adressen vinder: <code>?lib=kbh-nord</code> kan bruges i QR-koder på reolerne</li><li><b>Bogsiden lister alle biblioteker med status:</b> “Du kan finde bogen på disse biblioteker”. Dit bibliotek øverst, derefter steder med bogen på hylden, så udlånt, så ikke i samlingen. Status står som tekst, ikke kun farve. Feltet søger på navn og postnummer, og hver række viser kommune og postnummer. Fra bog til hylde er det ét tryk.</li></ul></div>
 </div>
 <p class="small">Prøv: <a href="index.html?lib=kbh-nord">index.html?lib=kbh-nord</a> åbner direkte på Nørrebro Bibliotek.</p>
 <h3>2. Opdag-filteret (prioritet 2)</h3>
@@ -81,14 +82,17 @@
 <tr><td>Emojis som filter har ingen overskrifter eller labels; de ser forskellige ud på Android og iOS.</td><td>Navn under hver emoji og to overskrifter. Forskellen på “Magi” og “Fabeldyr” (troldmanden og enhjørningen) er forklaret i en hjælpetekst, der vises ved valg.</td></tr>
 <tr><td>Hvorfor får jeg vist karrusellerne? Sæson, alder eller hvad?</td><td>Hver række har en h2 og en undertekst, fx “Uhyggelige bøger til Halloween – Til dig, der tør”.</td></tr>
 <tr><td>Siden mangler en h1. Hver kategori skal have sin egen overskrift.</td><td>H1 “Find din næste bog” og h2 pr. række.</td></tr>
-<tr><td>Scrollbar introduceres, når man skyder et spøgelse afsted – forvirrer.</td><td>Ingen animation ændrer layoutet. Animation respekterer “reducér bevægelse”.</td></tr>
+<tr><td>Scrollbar introduceres, når man skyder et spøgelse afsted – forvirrer.</td><td>Ingen animation i prototypen, hverken på forsiden eller i filtrene. Intet ændrer layoutet.</td></tr>
 <tr><td>Skoleikonet viser tooltip, så en side, hvor man igen skal vælge skole. Slet siden; vis skoler på forsiden; forudvælg nærmeste.</td><td>Ingen separat side. Listen er på forsiden og i menuen med nærmeste øverst og “Brug min placering”. (Kræver i produktion samtykke til lokation.)</td></tr>
 <tr><td>Søgefeltet: label “Søg efter bøger”, så man ikke tror, det er skoler.</td><td>Præcis den label.</td></tr>
-<tr><td>Halloween-tema er rigtig fedt, siden virker opdateret.</td><td>Halloween er bevaret som en dæmpet, animeret baggrund (kirkegård, spøgelser med kakao, zombie foran tv) bag indholdet. Den kan sættes på pause, og “reducér bevægelse” slukker den.</td></tr>
+<tr><td>Halloween-tema er rigtig fedt, siden virker opdateret.</td><td>Farver, ikoner og tekst bevares. Jeg har ikke bygget animeret baggrund, fordi Buggi skal være let og hurtig på biblioteket (se designprincippet i resuméet).</td></tr>
 <tr><td>En bog under “Har du læst” sender mig bare ned på listen. Jeg forventede en side med beskrivelse og relaterede bøger (emneord, kategori, lix, alder).</td><td>Egen bogside med resumé og “Lyst til noget lignende?”: forslag med årsag og valg “Lidt lettere / Samme niveau / Lidt sværere”.</td></tr>
+<tr><td>Når jeg ikke har valgt bibliotek og finder en bog, er der kun biblioteker at søge frem, som har bogen. Jeg skal trykke tre gange for at skrive i søgefeltet.</td><td>Bogsiden viser alle biblioteker med status (hylde, udlånt, ikke i samlingen) og et søgefelt. Intet valg først.</td></tr>
+<tr><td>Skriv kommune og biblioteksnavn, fordi børn ikke nødvendigvis ved, at man skal vælge kommune.</td><td>Hver række viser kommune og postnummer under biblioteksnavnet. Listen kan søges på postnummer.</td></tr>
+<tr><td>Skriv, hvad bøgerne hedder under hver bog. Titlerne på omslagene er små eller svære at læse.</td><td>Hvert kort har titel, type (Fakta eller Fortælling) og forfatter som tekst under omslaget.</td></tr>
 </table></div>
 
-<h2 id="indhold">Mere indhold i prototypen</h2><ul><li><b>Over 30 bøger</b> med alder, sider, læsbarhed, genre, udgivelsesår og humør- og emnetags, inklusive faktabøger, så Fakta/Fortælling-valget giver mening.</li><li><b>Serier</b> (fx Dragerne fra Bjerget) med links mellem bind.</li><li><b>Reservér-link</b> til bibliotekets hjemmeside på bogsiden. Buggi selv kan ikke reservere, ifølge casen.</li><li><b>Flere rækker på forsiden</b> med ord som overskrifter: Halloween, hjertevarme, sjove, fakta og aldersvalgte bøger.</li><li><b>Om Buggi</b> i tre trin, for børn, voksne og biblioteker, med tilgængelighed og feedbackformular.</li><li><b>Cookie-kort</b> i børnesprog og <b>kopiér link</b> til en bog, der bevarer biblioteket i adressen.</li></ul>
+<h2 id="indhold">Mere indhold i prototypen</h2><ul><li><b>Over 30 bøger</b> med alder, sider, læsbarhed, genre, udgivelsesår og humør- og emnetags, inklusive faktabøger, så Fakta/Fortælling-valget giver mening.</li><li><b>Serier</b> (fx Dragerne fra Bjerget) med links mellem bind.</li><li><b>Biblioteksliste på bogsiden</b> med status pr. bibliotek. Der er ikke noget reservér-link, fordi Buggi ifølge casen ikke skal kunne reservere.</li><li><b>Flere rækker på forsiden</b> med ord som overskrifter: Halloween, hjertevarme, sjove, fakta og aldersvalgte bøger.</li><li><b>Om Buggi</b> i tre trin, for børn, voksne og biblioteker, med tilgængelighed og feedbackformular.</li><li><b>Cookie-kort</b> i børnesprog og <b>kopiér link</b> til en bog, der bevarer biblioteket i adressen.</li></ul>
 <h2 id="behold">Det jeg bevarede</h2>
 <ul>
   <li><b>“Find på hylden”</b>: reviewets stærkeste element. Jeg har forklaret den grønne prik og gjort handlingen til bogsidens primære knap.</li>
@@ -98,22 +102,51 @@
 </ul>
 <p>Mobilen er i reviewet vurderet som pænt tilpasset. Jeg har derfor kun ændret det, der var værre end på PC: menuen mister sine tekster, og infoboksen dækker indhold. Tabbaren i bunden har nu ikon og tekst.</p>
 
+<h2 id="ekstra">Ekstra: ændringer at overveje</h2>
+<p>Disse ting hører ikke til de tre udfordringer eller den, jeg går i dybden med. De er forslag, der ikke er lavet i prototypen, bortset fra bogtitlerne.</p>
+<h3>Bogtitler som tekst under omslaget</h3>
+<p>Omslagenes titler er meget forskellige i størrelse og placering. På en mobilskærm kan et barn ikke altid se, om “Emil Nielsen” er forfatteren eller emnet, nogle titler er meget små, og andre er svære at læse. Titel, type og forfatter som tekst under omslaget giver en ensartet læseoplevelse, kan læses højt af oplæsningsværktøjer og tillader sammenligning. Afvejning: kortene bliver højere, så færre bøger er synlige uden scroll. Skal testes.</p>
+<h3>Tilgængelighed: WCAG 2.1 AA</h3>
+<p>Webtilgængelighedsloven kræver EN 301 549, og for web svarer det til WCAG 2.1 AA. Buggis tilgængelighedserklæring (<a href="https://was.digst.dk/buggi-dk">was.digst.dk/buggi-dk</a>) siger “overholder loven fuldt ud”, uden evalueringsrapport og uden ikke-tilgængeligt indhold. Min gennemgang (browser, DOM-tjek, tastatur, 320 px; ingen skærmlæser) peger på, at det er svært at stå inde for:</p>
+<div class="tbl"><table>
+<tr><th>Fund</th><th>Krav</th></tr>
+<tr><td>Opdag: 25 emoji-filtre er <code>div</code> med klik, <code>tabindex="-1"</code>, uden rolle og tilstand</td><td>2.1.1 Tastatur, 4.1.2 Navn, rolle, værdi</td></tr>
+<tr><td>Karruselpile er <code>img</code> med klik, ikke tastaturfokuserbare</td><td>2.1.1, 4.1.2</td></tr>
+<tr><td>Rækkers h2 viser kun emojis. Navnene står i værktøjstip ved hover og samles uden mellemrum (“GysSjov”)</td><td>2.4.6, 1.4.13, 1.3.1</td></tr>
+<tr><td>Skolevælger: dialog uden navn og <code>aria-modal</code>, søgefelt kun med placeholder</td><td>3.3.2, 4.1.2, 1.3.1</td></tr>
+<tr><td>Sidetitlen er “Buggi” på forside, vælger og søg</td><td>2.4.2</td></tr>
+<tr><td>H1 er logoet på alle sider; h2 før h1; /soeg uden indholdsoverskrift</td><td>1.3.1, 2.4.6</td></tr>
+<tr><td>10 “Spring kategori over”-links peger på <code>/[...all]</code></td><td>2.4.1 (kan være opfyldt via landmarks)</td></tr>
+<tr><td>Skydere giver kun tal 0–5 uden <code>aria-valuetext</code></td><td>4.1.2</td></tr>
+<tr><td>10 animerede GIF’er uden pause og ingen <code>prefers-reduced-motion</code> (varighed ikke målt)</td><td>2.2.2 (skal verificeres)</td></tr>
+</table></div>
+<p class="small">Bestod: sprog <code>da</code>, reflow ved 320 px, tekstafstand, kontrast på de tekster, jeg kunne måle, og synligt fokus på bogkort. Rettelse til mine tidligere noter: ingen billeder mangler <code>alt</code> (13 har <code>alt=""</code>, som er korrekt for dekorative billeder), skip-links er synlige ved fokus, og søgesiden har et skjult label. Målstørrelser på 23 px i footeren er ikke et brud på 2.1 (kravet 2.5.8 hører til 2.2).</p>
+<h3>Flere ting at overveje</h3>
+<ul>
+  <li><b>Browserens tilbageknap:</b> jeg har noteret, at Buggi bør bruge browserens egen knap i stedet for sin egen. Har ikke verificeret, om siden har en egen tilbageknap, der bryder historikken.</li>
+  <li><b>Menulabels på mobil:</b> menuen viser kun ikoner på mobil, men har tekst på PC (prototypen har ikon + tekst i begge).</li>
+  <li><b>Navne som på hylderne:</b> filternavnene kunne bruge samme ord som skiltene på biblioteket (Fantasy, Gys, Krimi), så barnet lærer, hvor bøgerne står. Kræver kendskab til bibliotekernes faktiske opstilling.</li>
+  <li><b>Færre trin i Opdag:</b> kan det klare sig med færre filtre? Skal testes mod “hurtigt til hylden”.</li>
+  <li><b>Placering som genvej:</b> brug af placering til at finde nærmeste bibliotek skal vurderes for samtykke, når brugeren er et barn.</li>
+</ul>
+
 <h2 id="fund">Alle 21 fund fra reviewet</h2>
 <p>Severity følger NN/g: 1 kosmetisk, 2 mindre, 3 alvorligt, 4 katastrofe. “Løst i prototypen” viser, hvor i prototypen man kan se løsningen (slå “Vis begrundelser” til for de gule ?-knapper).</p>
 <div class="tbl"><table id="ftab"><thead><tr><th>#</th><th>Heuristik</th><th>Fund</th><th>Sev.</th><th>Løst i prototypen</th></tr></thead><tbody></tbody></table></div>
 
 <h2 id="test">Sådan testes det</h2>
 <ul>
-  <li><b>5–6 børn på et bibliotek</b> med opgaven “Find en bog, du har lyst til, og gå hen og tag den”. Mål succes og tid til bog i hånden, nu og med ny version.</li>
-  <li><b>Analytics før og efter</b>: andel sessioner med valgt bibliotek og andel bogvisninger, der fører til “Find på hylden”. Baseline kan måles i dag.</li>
-  <li><b>Bibliotekarerne</b>: færre børn, der spørger om hjælp til at finde en bog, Buggi har vist dem.</li>
-  <li>Test med ordblinde børn og børn med dansk som andetsprog. Det er netop dem, stavetolerance og labels er til for.</li>
+  <li><b>Observér 5–6 børn på et bibliotek</b>, gerne på deres egen telefon eller bibliotekets pc. Opgaver: 1) find en bog, der virker interessant, 2) find bogen i biblioteket. “Find det bibliotek, du står i” er ikke en opgave, jeg giver. Jeg observerer, om stedet bliver et problem af sig selv.</li>
+  <li><b>Hvordan starter børnene?</b> Leder de efter noget kendt eller bruger de Opdag? Hvis de bruger Opdag, virker filtrene så, som de skal? Kan de voksne hjælpe med at finde bibliotek og hylde?</li>
+  <li><b>Mål:</b> tid fra start til valgt bog, tid fra bog til hylde, antal tryk, og om barnet finder bogen. Jeg ser også på, hvor lang tid der går på telefonen, før barnet går hen til hylden. Det skal sammenlignes med den nuværende løsning.</li>
+  <li><b>Analytics før og efter:</b> andel sessioner med valgt bibliotek og andel bogvisninger, der fører til “Find på hylden”. Baseline kan måles i dag.</li>
+  <li>Test med ordblinde børn og børn med dansk som andetsprog.</li>
 </ul>
 
 <h2 id="forbehold">Forbehold</h2>
 <ul>
   <li>Reviewet er lavet af én evaluator. NN/g anbefaler 3–5; nogle problemer er sandsynligvis overset.</li>
-  <li>Mobil er emuleret, ikke testet på en fysisk telefon.</li>
+  <li>Mobil er emuleret i browseren, ikke testet på en fysisk telefon. Skærmbilledet af bogtitler kommer fra en rigtig telefon.</li><li>Stavefejlen “hary potter” er en enkelt anekdote fra en nevø, ikke et mønster.</li><li>Designprincippet “mindst muligt telefon på biblioteket” er min antagelse. Casen vil også vække læselyst, så jeg skal teste, at en enklere løsning ikke tager inspirationen fra børnene. Buggi bruges også hjemme.</li><li>Tilgængelighedsfundene er fra DOM- og tastaturtjek uden skærmlæser og skal verificeres.</li>
   <li>Fundene er hypoteser, ikke bevis. En heuristisk evaluering kan ikke erstatte test med børn.</li>
   <li>To antagelser bør tjekkes i DBC’s data, før noget bygges: at mange sessioner i dag sker uden valgt bibliotek, og at mange børn bruger en filial frem for hovedbiblioteket.</li>
   <li>Prototypen simulerer placering, udlånsstatus, bogdata, cookie-valg og feedbackformularen (den sender ikke noget). Teksterne om cookies og tilgængelighed er forslag, ikke DBC’s juridiske tekst.</li>

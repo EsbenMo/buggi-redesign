@@ -26,15 +26,15 @@ window.WHY = {
     t: "Karruseller med overskrift i ord",
     f: [16, 10], sev: 2, n: "Noter: karruseller mangler overskrift, siden mangler h1",
     before: "Rækkerne havde kun emojis som overskrift. Brugeren kunne ikke se, om det var sæson, alder eller genre. Siden havde ingen h1. Bøger for 11–16 år lå øverst til 8–12-årige.",
-    now: "H1 \"Find din næste bog\" og en h2 pr. række, der forklarer hvorfor bøgerne vises: \"Uhyggelige bøger til Halloween\", \"Fordi du kan lide Percy Jackson\". Aldersfilter 8–12 som standard.",
+    now: "H1 \"Find din næste bog\" og en h2 pr. række, der forklarer hvorfor bøgerne vises: \"Uhyggelige bøger til Halloween\", \"Fordi du kan lide Percy Jackson\". aldersfilter 8–12 som standard. Hver bog har titel, type (Fakta eller Fortælling) og forfatter som tekst under omslaget, så barnet kan se, om bogen er skrevet af eller handler om en person, og så oplæsningsværktøjer kan læse den.",
     why: "Skærmlæsere og læsetrænede børn har brug for ord. Overskriften afkoder intentionen (genkendelse frem for genkaldelse, H6)."
   },
   seasonal: {
-    t: "Sæsontema bevaret, men dæmpet",
-    f: [20], sev: 1, n: "Noter: Halloween virker opdateret, ikke støvet",
+    t: "Sæsontema bevaret som farver, ikke som bevægelse",
+    f: [20], sev: 1, n: "Noter: Halloween virker opdateret. Buggi skal ikke blive tung eller animeret",
     before: "Travl Halloween-baggrund og animationer konkurrerede med bogcovers. Et spøgelse viste og skjulte en scrollbar.",
-    now: "Halloween bevares som en levende, men stille baggrund: en gammel kirkegård med måne, flagermus og spindelvæv, spøgelser der drikker varm kakao og en zombie foran tv'et. Den ligger bag indholdet, er dæmpet og ændrer aldrig layoutet. Den kan sættes på pause med en knap øverst, og \"reducér bevægelse\" slukker den automatisk.",
-    why: "Sæsonen gør siden levende (din note), og humoren passer til 8–12-årige. Bevægelse skal samtidig kunne stoppes (WCAG 2.2.2), og den må ikke konkurrere med bogcovers eller flytte siden."
+    now: "Halloween-farver, ikoner og tekst bevares. Der er ingen animeret baggrund og ingen animationer, der ændrer layoutet.",
+    why: "Barnet skal hurtigt hen til hylden og være til stede med de voksne og de andre børn. Sæsonen gør siden levende, men bevægelse trækker tid og opmærksomhed på telefonen, som er det modsatte af formålet."
   },
   nav: {
     t: "Tekst og ikon i menuen på både PC og mobil",
@@ -86,11 +86,11 @@ window.WHY = {
     why: "Det er kernen i casen: barnet står på biblioteket og skal gå hen og tage bogen."
   },
   avail: {
-    t: "Udlånsstatus kun med valgt sted",
-    f: [1, 8], sev: 3, n: "",
-    before: "Uden valgt bibliotek forsvinder hyldeplacering og status uden forklaring.",
-    now: "Hvis intet sted er valgt, siger bogsiden hvad barnet mister og tilbyder valget lige dér.",
-    why: "Fejl skal forebygges i flowet, ikke først opdages i bunden af siden (H5)."
+    t: "Fra bog til hylde: alle biblioteker med status på bogsiden",
+    f: [1, 8, 12, 19], sev: 3, n: "Noter: Zombiejagt fandtes ikke på Nørrebro, men på Nørre Snede. Fire tryk for at søge bibliotek",
+    before: "For at se, hvor en bog står, skulle man trykke Find bog, derefter en knap for at vælge skole eller bibliotek, så trykke i søgefeltet og skrive. Bøger, der ikke fandtes på det valgte sted, forsvandt uden forklaring.",
+    now: "Bogsiden viser straks \"Du kan finde bogen på disse biblioteker\": dit bibliotek øverst, derefter de steder, hvor bogen står på hylden, så udlånt, så ikke i samlingen. Hver række har statustekst, ikke kun farve (\"Står på hylden\", \"Udlånt\", \"Ikke i samlingen\"), kommune og postnummer. Feltet kan søge på navn eller postnummer. Ét tryk på \"Find på hylden\" fører til hylden og gør stedet til dit bibliotek.",
+    why: "Casen: barnet står på biblioteket og vil hen til bogen. Statussen skal vise sig uden ekstra valg (H1, H6), og en bog, der ikke findes her, skal forklares i stedet for at forsvinde (H9). Eksempeldata: tilgængeligheden er opfundet i prototypen."
   },
   cookie: {
     t: "Cookie-kort i børnesprog med ligeværdige valg",
@@ -109,8 +109,8 @@ window.WHY = {
   tweaks: {
     t: "Tilgængelighed som standard",
     f: [], sev: 2, n: "WCAG 2.2 AA-stikprøven i reviewet",
-    before: "13 af 328 billeder manglede alt-tekst, 1 × 1 px skip-links, ingen labels på felter, animation uden pauseknap.",
-    now: "Atkinson Hyperlegible-skrifttype (skabt til god læsbarhed), synligt fokus, labels på alle felter, mål på mindst 48 px, reducér-bevægelse respekteret, og alle knapper har tekst.",
+    before: "Overskrifter kun med emojis, filtre der ikke kan nås med tastatur, ens sidetitler og skip-links, der peger på en ubrugt rute. Se rapportens ekstrasektion om WCAG 2.1 AA.",
+    now: "Atkinson Hyperlegible-skrifttype, synligt fokus, labels på alle felter, store knapper, reducér-bevægelse respekteret, og alle filtre er rigtige knapper med tilstand.",
     why: "Målgruppen omfatter ordblinde og børn med dansk som andetsprog."
   }
 };
