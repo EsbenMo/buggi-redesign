@@ -305,3 +305,7 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
   .chip .cl{font-size:16px;min-width:0;overflow-wrap:anywhere}
   .facts li{font-size:1rem}
 }
+
+/* Ikoner foran rækkeoverskrifter: sekundære, med ord ved siden af */
+.row-h{align-items:center}
+.row-ic{font-size:1.9rem;line-height:1;display:inline-flex;gap:4px}

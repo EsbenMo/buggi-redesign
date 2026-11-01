@@ -26,7 +26,7 @@ window.WHY = {
     t: "Karruseller med overskrift i ord",
     f: [16, 10], sev: 2, n: "Noter: karruseller mangler overskrift, siden mangler h1",
     before: "Rækkerne havde kun emojis som overskrift. Brugeren kunne ikke se, om det var sæson, alder eller genre. Siden havde ingen h1. Bøger for 11–16 år lå øverst til 8–12-årige.",
-    now: "H1 \"Find din næste bog\" og en h2 pr. række, der forklarer hvorfor bøgerne vises: \"Uhyggelige bøger til Halloween\", \"Fordi du kan lide Percy Jackson\". aldersfilter 8–12 som standard. Hver bog har titel, type (Fakta eller Fortælling) og forfatter som tekst under omslaget, så barnet kan se, om bogen er skrevet af eller handler om en person, og så oplæsningsværktøjer kan læse den.",
+    now: "H1 \"Find din næste bog\" og en h2 pr. række med emoji foran (som på Opdag), så ikonerne er sekundære og ordene bærer meningen, der forklarer hvorfor bøgerne vises: \"Uhyggelige bøger til Halloween\", \"Fordi du kan lide Percy Jackson\". aldersfilter 8–12 som standard. Hver bog har titel, type (Fakta eller Fortælling) og forfatter som tekst under omslaget, så barnet kan se, om bogen er skrevet af eller handler om en person, og så oplæsningsværktøjer kan læse den.",
     why: "Skærmlæsere og læsetrænede børn har brug for ord. Overskriften afkoder intentionen (genkendelse frem for genkaldelse, H6)."
   },
   seasonal: {

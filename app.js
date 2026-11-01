@@ -160,8 +160,8 @@
     </form>`;
   }
 
-  function row(title, sub, books, showAll) {
-    return `<section class="row" aria-labelledby="h-${title.length}${books[0]?.id}"><div class="row-h"><h2 id="h-${title.length}${books[0]?.id}">${esc(title)}</h2>${sub ? `<p>${esc(sub)}</p>` : ""}</div><div class="rail">${books.map(b => bookCard(b)).join("")}</div></section>`;
+  function row(title, sub, books, icons = []) {
+    return `<section class="row" aria-labelledby="h-${title.length}${books[0]?.id}"><div class="row-h">${icons.length ? `<span class="row-ic" aria-hidden="true">${icons.join("")}</span>` : ""}<h2 id="h-${title.length}${books[0]?.id}">${esc(title)}</h2>${sub ? `<p>${esc(sub)}</p>` : ""}</div><div class="rail">${books.map(b => bookCard(b)).join("")}</div></section>`;
   }
 
   function viewHome() {
@@ -178,12 +178,12 @@
     app.innerHTML = `<div class="hero"><h1>Find din næste bog</h1>${searchBox()}</div>
       ${onb}
       <div class="rows">${pin("rows")}
-        ${row("Uhyggelige bøger til Halloween", "Til dig, der tør", scary)}
-        ${row("Har du læst Percy Jackson?", "Prøv også disse", relP)}
-        ${row("Hjertevarme bøger", "Når du har lyst til at blive glad", target.filter(b => b.tags.includes("hjertevarm")).slice(0, 8))}
-        ${row("Sjove bøger", "Hvor du kommer til at grine", target.filter(b => b.tags.includes("sjov")).slice(0, 8))}
-        ${row("Fakta: dyr, rummet og fortid", "Bøger hvor du lærer noget", target.filter(b => b.cat === "Fakta"))}
-        ${row("Bøger til 8–12 år", "Valgt til din alder", target.slice(0, 10))}
+        ${row("Uhyggelige bøger til Halloween", "Til dig, der tør", scary, [TAGS.uhyggelig.e, TAGS.sjov.e])}
+        ${row("Har du læst Percy Jackson?", "Prøv også disse", relP, [TAGS.magi.e, TAGS.venskab.e])}
+        ${row("Hjertevarme bøger", "Når du har lyst til at blive glad", target.filter(b => b.tags.includes("hjertevarm")).slice(0, 8), [TAGS.hjertevarm.e])}
+        ${row("Sjove bøger", "Hvor du kommer til at grine", target.filter(b => b.tags.includes("sjov")).slice(0, 8), [TAGS.sjov.e])}
+        ${row("Fakta: dyr, rummet og fortid", "Bøger hvor du lærer noget", target.filter(b => b.cat === "Fakta"), [TAGS.rummet.e, TAGS.dyr.e, TAGS.historie.e])}
+        ${row("Bøger til 8–12 år", "Valgt til din alder", target.slice(0, 10), [TAGS.spaendende.e])}
       </div>
       <section class="about-teaser" aria-labelledby="ab-h"><h2 id="ab-h">Hvad er Buggi?</h2><p>Buggi hjælper dig med at finde en god bog. Vælg dit bibliotek, så ser du, om bogen står på hylden – og hvor.</p><a class="cta" href="#/about">Læs mere om Buggi</a></section>`;
     wirePickers(app);
