@@ -289,3 +289,19 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
   .al-right{flex-wrap:nowrap;justify-content:space-between}
   .al-right .mini{min-height:44px;padding:0 12px;white-space:nowrap}
 }
+
+/* Læsbar tekst på små skærme: ingen tekst under 16 px */
+@media (max-width:760px){
+  body{font-size:18px}
+  .small,.picker-label,.picker-list .grp,.picker-list small,.card-meta,.why-r,.hints,.al-name small,.al-mine,.avail,.tag,.cookies p,.ftr,.act-l,.more summary{font-size:1rem}
+  .proto-banner,.proto-banner button,.nav a{font-size:16px}
+  .chip .cl{font-size:1.05rem}
+  .card-title{font-size:1.05rem}
+}
+@media (max-width:760px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chip.big{padding:6px 8px;gap:6px}
+  .chip .ce{font-size:1.4rem}
+  .chip .cl{font-size:16px;min-width:0;overflow-wrap:anywhere}
+  .facts li{font-size:1rem}
+}
