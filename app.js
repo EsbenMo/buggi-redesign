@@ -14,7 +14,7 @@
   let libId = LIBS.some(l => l.id === urlLib) ? urlLib : store.get("buggi-lib");
   if (!LIBS.some(l => l.id === libId)) libId = null;
   let whyOn = store.get("buggi-why") === "1";
-  const disc = { moods: new Set(), themes: new Set(), len: "alle", lvl: "alle", cat: "alle" };
+  const disc = { limit: 12, moods: new Set(), themes: new Set(), len: "alle", lvl: "alle", cat: "alle" };
   const lib = () => LIBS.find(l => l.id === libId);
   const bookById = id => BOOKS.find(b => b.id === id);
 
@@ -223,10 +223,12 @@
     if (!$("#active")) return app.removeEventListener("click", discoverClicks);
     const rm = e.target.closest("[data-rm]");
     if (rm) { const [k, v] = rm.dataset.rm.split(":"); if (k === "moods" || k === "themes") disc[k].delete(v); else disc[k] = "alle"; updateDiscover(); }
+    if (e.target.closest("[data-more]")) { disc.limit += 12; updateDiscover(true); return; }
     if (e.target.closest("[data-clear]")) { disc.moods.clear(); disc.themes.clear(); disc.len = disc.lvl = disc.cat = "alle"; updateDiscover(); }
   }
   // Opdaterer kun det, der ændrer sig, så filterpanelets scrollposition og fokus bevares
-  function updateDiscover() {
+  function updateDiscover(keep) {
+    if (!keep) disc.limit = 12;
     const results = filteredDiscover();
     app.querySelectorAll(".chip[data-tog]").forEach(c => c.setAttribute("aria-pressed", disc[c.dataset.set].has(c.dataset.tog)));
     app.querySelectorAll(".seg input").forEach(i => { i.checked = disc[i.name] === i.value; });
@@ -240,7 +242,8 @@
     const sel = [...disc.moods, ...disc.themes];
     $("#hints").innerHTML = sel.length ? "<br>" + esc(sel.map(id => TAGS[id].label + ": " + TAGS[id].hint).join(" · ")) : "";
     $("#res-h").textContent = `${results.length} ${results.length === 1 ? "bog" : "bøger"} passer til dig`;
-    $("#res-body").innerHTML = results.length ? `<div class="list">${results.map(b => bookCard(b)).join("")}</div>` : `<p class="empty">Ingen bøger passer til alle dine valg. Fjern et af dem ovenfor, eller <button class="link" type="button" data-clear>nulstil alt</button>.</p>`;
+    const cap = matchMedia("(max-width:760px)").matches ? disc.limit : Infinity;
+    $("#res-body").innerHTML = results.length ? `<div class="list">${results.slice(0, cap).map(b => bookCard(b)).join("")}</div>${results.length > cap ? `<p class="more-books"><button type="button" class="ghost" data-more>Vis flere bøger (${results.length - cap} mere)</button></p>` : ""}` : `<p class="empty">Ingen bøger passer til alle dine valg. Fjern et af dem ovenfor, eller <button class="link" type="button" data-clear>nulstil alt</button>.</p>`;
     app.querySelector("[data-jump]").textContent = `Vis ${results.length} ${results.length === 1 ? "bog" : "bøger"}`;
   }
   function filteredDiscover() {
