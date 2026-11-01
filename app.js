@@ -198,11 +198,12 @@
           <section aria-labelledby="g1"><h2 id="g1">Hvordan skal bogen føles?</h2><div class="grid">${MOODS.map(t => moodBtn(t, "moods")).join("")}</div></section>
           <section aria-labelledby="g2"><h2 id="g2">Hvad skal den handle om?</h2><div class="grid">${THEMES.map(t => moodBtn(t, "themes")).join("")}</div></section>
           <p class="rule">${pin("filterrule")}<b>Jo flere du vælger, jo færre bøger.</b> Vi viser kun bøger, der passer til alt, du har valgt.<span class="small hints" id="hints"></span></p>
+          <details class="more" ${disc.len !== "alle" || disc.lvl !== "alle" || disc.cat !== "alle" ? "open" : ""}><summary>Flere valg: længde, sværhed og slags</summary>
           <div class="segs">
             ${seg("len", "Hvor lang?", [["alle", "Alle"], ["Kort", "Kort"], ["Mellem", "Mellem"], ["Lang", "Lang"]])}
             ${seg("lvl", "Hvor svær?", [["alle", "Alle"], ["Let at læse", "Let"], ["Middel", "Middel"], ["Svær", "Svær"]])}
             ${seg("cat", "Hvilken slags?", [["alle", "Begge"], ["Fiktion", "Fortælling"], ["Fakta", "Fakta"]])}
-          </div>
+          </div></details>
         </aside>
         <section class="results" id="results" aria-labelledby="res-h" tabindex="-1">${pin("stickycta")}
           <div class="active" id="active"></div>

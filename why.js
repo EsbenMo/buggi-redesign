@@ -54,7 +54,7 @@ window.WHY = {
     t: "Flere valg giver færre bøger – og det står der",
     f: [3, 17], sev: 3, n: "",
     before: "Ekstra emoji øgede antallet fra 1.255 til 1.332, modsat filterkonventionen. Skyderne viste ikke valgt værdi.",
-    now: "Valg afgrænser (OG-logik). Teksten \"Jo flere du vælger, jo færre bøger\" står ved filteret. Længde og sværhed er knapper med ord (\"Kort\", \"Mellem\", \"Lang\") i stedet for skydere. Fakta/Fiktion er også knapper i stedet for lagkagediagram.",
+    now: "Valg afgrænser (OG-logik). Teksten \"Jo flere du vælger, jo færre bøger\" står ved filteret. Længde, sværhed og slags ligger under \"Flere valg\", så første skærm kun har to enkle spørgsmål. Længde og sværhed er knapper med ord (\"Kort\", \"Mellem\", \"Lang\") i stedet for skydere. Fakta/Fiktion er også knapper i stedet for lagkagediagram.",
     why: "Systemet skal følge brugerens mentale model (H4). Knapper med ord kan læses højt og kræver ikke finmotorik."
   },
   stickycta: {

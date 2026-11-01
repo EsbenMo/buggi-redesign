@@ -260,3 +260,8 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
 .avail.out{background:#ffe9a8;color:#3b2c00}
 .avail.no{background:#2b3a6b;color:#e4e9ff}
 .mini{display:inline-flex;align-items:center;min-height:40px;padding:0 14px;border-radius:999px;background:var(--coral);color:var(--ink);font-weight:700;text-decoration:none}
+
+/* Opdag: færre valg som standard, resten under Flere valg */
+.more{margin-top:10px}
+.more summary{cursor:pointer;min-height:var(--tap);display:flex;align-items:center;font-weight:700;color:var(--yellow)}
+.more[open] summary{margin-bottom:4px}
