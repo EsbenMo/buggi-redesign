@@ -13,7 +13,8 @@
   // Biblioteket i adressen vinder over det gemte valg (fund 2): QR-koder og delte links viser altid det rigtige sted.
   let libId = LIBS.some(l => l.id === urlLib) ? urlLib : store.get("buggi-lib");
   if (!LIBS.some(l => l.id === libId)) libId = null;
-  let whyOn = store.get("buggi-why") === "1";
+  let whyOn = false; // begrundelser er et tilvalg og huskes ikke mellem besøg
+  try { localStorage.removeItem("buggi-why"); } catch {}
   const disc = { limit: 12, moods: new Set(), themes: new Set(), len: "alle", lvl: "alle", cat: "alle" };
   const lib = () => LIBS.find(l => l.id === libId);
   const bookById = id => BOOKS.find(b => b.id === id);
@@ -416,7 +417,7 @@
       <a class="rep" href="report.html#fund">Se hele reviewet og alle 21 fund →</a>`;
     d.hidden = false; $(".close", d).focus(); $(".close", d).onclick = () => { d.hidden = true; };
   }
-  $("#why-toggle").addEventListener("click", () => { whyOn = !whyOn; store.set("buggi-why", whyOn ? "1" : "0"); document.body.classList.toggle("why-on", whyOn); $("#why-toggle").setAttribute("aria-pressed", whyOn); if (!whyOn) $("#why-drawer").hidden = true; });
+  $("#why-toggle").addEventListener("click", () => { whyOn = !whyOn; document.body.classList.toggle("why-on", whyOn); $("#why-toggle").setAttribute("aria-pressed", whyOn); if (!whyOn) $("#why-drawer").hidden = true; });
   document.addEventListener("keydown", e => { if (e.key === "Escape") $("#why-drawer").hidden = true; });
 
   // Cookie-kort: ikke en dialog, ligeværdige valg, børnesprog (fund 11)
