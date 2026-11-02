@@ -309,3 +309,8 @@ html:hover,.rail:hover,.filters:hover,.picker-list:hover{scrollbar-color:rgba(19
 /* Ikoner foran rækkeoverskrifter: sekundære, med ord ved siden af */
 .row-h{align-items:center}
 .row-ic{font-size:1.9rem;line-height:1;display:inline-flex;gap:4px}
+
+/* Begrundelsesknap nederst i stedet for banner øverst */
+.why-fab{position:fixed;left:16px;bottom:16px;z-index:36;min-height:44px;padding:0 16px;border-radius:999px;background:var(--bg);color:var(--yellow);border:2px solid var(--yellow);font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.why-fab[aria-pressed="true"]{background:var(--yellow);color:var(--ink)}
+@media (max-width:760px){.why-fab{left:12px;bottom:150px;font-size:16px}}
