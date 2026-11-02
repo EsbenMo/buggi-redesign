@@ -12,7 +12,7 @@ window.WHY = {
     t: "\"Hvor er du?\" på forsiden i stedet for en dialog",
     f: [1, 12, 14, 19], sev: 3, n: "Noter: vis skoler på forsiden, slet skolesiden",
     before: "Fuldskærmsdialog, fokus på \"Fortsæt uden\", 234 poster i én kolonne, testposter, ingen forklaring på hvorfor man skal vælge.",
-    now: "Et kort på forsiden, der ikke blokerer indholdet. Primær handling er \"Brug min placering\" eller at søge. Løftet i barnets sprog: \"så viser vi kun bøger, der står på hylden lige nu\". Listen er grupperet efter kommune/skole, har nærmeste øverst og ingen testposter.",
+    now: "Prototypen starter uden valgt bibliotek og skubber stærkt til valget: kortet \"Først: hvor er du?\" står øverst på forsiden, vælgeren i menuen er fremhævet, og de øvrige sider har en bjælke med \"Vælg bibliotek\". Man kan stadig bare kigge. Et kort på forsiden, der ikke blokerer indholdet. Primær handling er \"Brug min placering\" eller at søge. Løftet i barnets sprog: \"så viser vi kun bøger, der står på hylden lige nu\". Listen er grupperet efter kommune/skole, har nærmeste øverst og ingen testposter.",
     why: "Casen: Buggi bruges primært, mens barnet står på biblioteket. Uden valgt sted mister barnet hylde og udlånsstatus – det er hele kernen i produktet. Derfor er valget forfremmet, men ikke tvunget."
   },
   search: {

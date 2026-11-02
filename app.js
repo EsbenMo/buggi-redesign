@@ -11,7 +11,9 @@
   };
   const urlLib = new URLSearchParams(location.search).get("lib");
   // Biblioteket i adressen vinder over det gemte valg (fund 2): QR-koder og delte links viser altid det rigtige sted.
-  let libId = LIBS.some(l => l.id === urlLib) ? urlLib : store.get("buggi-lib");
+  const saveLib = id => { try { id ? sessionStorage.setItem("buggi-lib", id) : sessionStorage.removeItem("buggi-lib"); localStorage.removeItem("buggi-lib"); } catch {} };
+  const sessionLib = () => { try { return sessionStorage.getItem("buggi-lib"); } catch { return null; } };
+  let libId = LIBS.some(l => l.id === urlLib) ? urlLib : sessionLib();
   if (!LIBS.some(l => l.id === libId)) libId = null;
   let whyOn = false; // begrundelser er et tilvalg og huskes ikke mellem besøg
   try { localStorage.removeItem("buggi-why"); } catch {}
@@ -84,10 +86,10 @@
   function libPicker(id, label, compact) {
     const cur = lib();
     const groups = [...new Set(LIBS.map(l => l.group))];
-    return `<div class="picker ${compact ? "compact" : ""}" data-picker>
+    return `<div class="picker ${compact ? "compact" : ""}${cur ? "" : " unset"}" data-picker>
       <label class="picker-label" for="${id}">${esc(label)}</label>
       <button class="picker-btn" id="${id}" type="button" aria-haspopup="listbox" aria-expanded="false">
-        <span aria-hidden="true">🏫</span> <span class="picker-val">${cur ? esc(cur.name) : "Ikke valgt endnu"}</span> <span class="chev" aria-hidden="true">▾</span>
+        <span aria-hidden="true">🏫</span> <span class="picker-val">${cur ? esc(cur.name) : "Vælg dit bibliotek"}</span> <span class="chev" aria-hidden="true">▾</span>
       </button>
       <div class="picker-pop" hidden>
         <label class="sr" for="${id}-q">Søg efter skole, bibliotek eller postnummer</label>
@@ -137,8 +139,8 @@
     clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 5000);
   }
   function choose(id) {
-    const prev = libId; libId = id; store.set("buggi-lib", id);
-    toast(`Du er nu på ${lib().name}.`, () => { libId = prev; if (prev) store.set("buggi-lib", prev); route(); });
+    const prev = libId; libId = id; saveLib(id);
+    toast(`Du er nu på ${lib().name}.`, () => { libId = prev; saveLib(prev); route(); });
     route();
   }
 
@@ -170,14 +172,15 @@
     const scary = target.filter(b => b.tags.includes("uhyggelig"));
     const readP = bookById("percy");
     const relP = related(readP).map(r => r.x);
-    const onb = lib() ? "" : `<section class="onb" aria-labelledby="onb-h">${pin("onboarding")}
-      <h2 id="onb-h">Hvor er du?</h2>
-      <p>Vælg din skole eller dit bibliotek, så viser vi kun bøger, der står på hylden lige nu – og hvor du finder dem.</p>
-      <div class="onb-ill" aria-hidden="true">📚 → 🚶 → 📖</div>
+    const onb = lib() ? "" : `<section class="onb strong" aria-labelledby="onb-h">${pin("onboarding")}
+      <h2 id="onb-h">Først: hvor er du?</h2>
+      <p>Vælg dit bibliotek, så ser du, hvad der står på hylden lige nu, og hvor du finder bogen.</p>
+      <button class="cta geo-big" type="button" data-geo>📍 Brug min placering</button>
+      <p class="or">eller vælg selv</p>
       ${libPicker("lib-onb", "Vælg skole eller bibliotek", false)}
-      <p class="small">Vil du bare kigge? Bladr videre herunder – du kan altid vælge senere.</p></section>`;
-    app.innerHTML = `<div class="hero"><h1>Find din næste bog</h1>${searchBox()}</div>
-      ${onb}
+      <p class="small">Vil du bare kigge, kan du bladre videre. Du kan altid vælge senere.</p></section>`;
+    app.innerHTML = `${onb}
+      <div class="hero"><h1>Find din næste bog</h1>${searchBox()}</div>
       <div class="rows">${pin("rows")}
         ${row("Uhyggelige bøger til Halloween", "Til dig, der tør", scary, [TAGS.uhyggelig.e, TAGS.sjov.e])}
         ${row("Har du læst Percy Jackson?", "Prøv også disse", relP, [TAGS.magi.e, TAGS.venskab.e])}
@@ -392,6 +395,7 @@
     else if (v === "shelf") viewShelf(parts[1]);
     else if (v === "about") viewAbout();
     else viewHome();
+    if (!lib() && ["discover", "search", "shelf"].includes(v)) app.insertAdjacentHTML("afterbegin", `<div class="nudge" role="region" aria-label="Vælg bibliotek"><span><b>Vælg dit bibliotek</b>, så ser du, hvad der står på hylden.</span><button type="button" data-open-lib>Vælg bibliotek</button></div>`);
     document.title = ({ discover: "Opdag", search: "Søg", book: "Bog", shelf: "Find på hylden", about: "Om Buggi" }[v] || "Find din næste bog") + " – Buggi (redesign-prototype)";
     $("#why-drawer").hidden = true;
     document.body.classList.toggle("why-on", whyOn);
@@ -403,7 +407,9 @@
   document.addEventListener("submit", e => { if (e.target.matches("[data-fb]")) { e.preventDefault(); e.target.hidden = true; const ok = $(".fb-ok"); ok.hidden = false; ok.tabIndex = -1; ok.focus(); return; } if (e.target.matches("[data-search]")) { e.preventDefault(); const q = new FormData(e.target).get("q").trim(); location.hash = "#/search" + (q ? "?q=" + encodeURIComponent(q) : ""); if (location.hash === "#/search?q=" + encodeURIComponent(q)) route(); } });
   document.addEventListener("click", e => {
     const sh = e.target.closest("[data-share]"); if (sh) { const u = location.origin + location.pathname + (libId ? "?lib=" + libId : "") + "#/book/" + sh.dataset.share; (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => toast("Linket er kopieret."), () => toast("Kunne ikke kopiere. Kopiér adressen i browseren.")); }
-    const pk = e.target.closest("[data-pick-lib]"); if (pk) { libId = pk.dataset.pickLib; store.set("buggi-lib", libId); }
+    if (e.target.closest("[data-geo]")) choose("kbh-nord");
+    if (e.target.closest("[data-open-lib]")) { window.scrollTo(0, 0); setTimeout(() => $("#lib-top").click(), 0); }
+    const pk = e.target.closest("[data-pick-lib]"); if (pk) { libId = pk.dataset.pickLib; saveLib(libId); }
     const an = e.target.closest("[data-anchor]"); if (an) setTimeout(() => document.getElementById(an.dataset.anchor)?.scrollIntoView(), 120);
     const w = e.target.closest(".why-pin"); if (w) { e.preventDefault(); showWhy(w.dataset.why); }
     if (!e.target.closest("[data-picker]")) document.querySelectorAll(".picker-pop").forEach(p => { p.hidden = true; p.parentElement.querySelector(".picker-btn").setAttribute("aria-expanded", "false"); });
